@@ -24,7 +24,10 @@ class HomeController extends Controller
         $minSeconds = 3 * 60; // Default min 3 menit
 
         if ($setting) {
-            if ($setting->durasi === '3-5') {
+            if ($setting->durasi === '1-2') {
+                $minSeconds = 1 * 60;
+                $maxSeconds = 2 * 60;
+            } elseif ($setting->durasi === '3-5') {
                 $minSeconds = 3 * 60;
                 $maxSeconds = 5 * 60;
             } elseif ($setting->durasi === '9-10') {

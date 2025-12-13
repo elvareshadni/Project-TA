@@ -24,6 +24,10 @@
                     <label for="durasi" class="font-weight-bold">Pilih Durasi Identifikasi:</label>
                     <select id="durasi" class="form-control" name="durasi" required>
                         <option value="" disabled {{ empty(optional($setting)->durasi) ? 'selected' : '' }}>-- Pilih Durasi --</option>
+                        
+                        <option value="1-2" {{ optional($setting)->durasi == '1-2' ? 'selected' : '' }}>
+                            1 - 2 Menit
+                        </option>
 
                         <option value="3-5" {{ optional($setting)->durasi == '3-5' ? 'selected' : '' }}>
                             3 - 5 Menit

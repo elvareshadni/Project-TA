@@ -17,7 +17,7 @@ class SettingWaktuController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'durasi' => 'required|in:3-5,9-10',
+            'durasi' => 'required|in:1-2,3-5,9-10',
         ]);
 
         $setting = SettingWaktu::first() ?? new SettingWaktu();
