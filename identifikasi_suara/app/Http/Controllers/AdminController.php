@@ -40,6 +40,6 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin.index'); // pastikan view ini ada
+        return view('admin.index'); 
     }
 }

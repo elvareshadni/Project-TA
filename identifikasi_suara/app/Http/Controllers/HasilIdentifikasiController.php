@@ -1,42 +1,47 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\HasilIdentifikasi;
-use Illuminate\Support\Facades\Http;
 
 class HasilIdentifikasiController extends Controller
 {
     public function simpan(Request $request)
     {
-        $request->validate([
-            'file_suara' => 'required|file|mimes:wav,mp3',
+        $data = $request->validate([
+            'sumber'    => 'required|in:upload,record',
+            'file_suara'=> 'nullable|string',
+            'hasil'     => 'required|string',
+            'akurasi'   => 'nullable|numeric',
+
+            'distribution_by_emotion' => 'nullable',
+            'distribution_by_suku'    => 'nullable',
+
+            'nama'   => 'nullable|string',
+            'email'  => 'nullable|email',
+            'gender' => 'nullable|string',
+            'usia'   => 'nullable',
         ]);
 
-        // Simpan file suara ke storage
-        $file = $request->file('file_suara');
-        $namaFile = time() . '_' . $file->getClientOriginalName();
-        $file->storeAs('public/suara', $namaFile);
-
-        // Kirim audio ke FastAPI
-        $response = Http::attach(
-            'file',
-            file_get_contents($file),
-            $file->getClientOriginalName()
-        )->post('http://localhost:8001/predict'); // Ganti sesuai endpoint kamu
-
-        // Ambil hasil dari FastAPI
-        $hasil = $response->json()['emotion'] ?? 'Tidak terdeteksi';
-        $akurasi = $response->json()['accuracy'] ?? null;
-
-        // Simpan ke database
         HasilIdentifikasi::create([
-            'user_id'   => auth()->id(),
-            'file_suara'=> $namaFile,
-            'hasil'     => $hasil,
-            'akurasi'   => $akurasi,
+            'nama'   => $data['nama']   ?? null,
+            'email'  => $data['email']  ?? null,
+            'gender' => $data['gender'] ?? null,
+            'usia'   => $data['usia']   ?? null,
+
+            'sumber'     => $data['sumber'],
+            'file_suara' => $data['file_suara'] ?? null,
+            'hasil'      => $data['hasil'],
+            'akurasi'    => $data['akurasi'] ?? null,
+
+            'distribution_by_emotion' => $data['distribution_by_emotion'] ?? null,
+            'distribution_by_suku'    => $data['distribution_by_suku'] ?? null,
         ]);
 
-        return redirect()->back()->with('success', 'Hasil identifikasi berhasil disimpan!');
+        return response()->json([
+            'status'  => 'ok',
+            'message' => 'Hasil identifikasi berhasil disimpan',
+        ]);
     }
 }

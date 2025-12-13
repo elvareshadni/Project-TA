@@ -34,7 +34,7 @@
 
     .info-section {
         flex: 1;
-        background-color: #1e3a5f;
+        background-color: #0053d6;
         text-align: center;
         padding: 60px 30px;
     }
@@ -49,8 +49,8 @@
     }
 
     .btn-primary {
-        background-color: #1e3a5f;
-        border: 1px solid #1e3a5f; 
+        background-color: #0053d6;
+        border: 1px solid #0053d6; 
         border-radius: 10px;
         padding: 8px;
         font-weight: 600;
@@ -58,20 +58,20 @@
     }
 
     .btn-primary:hover {
-        background-color: #1e3a5f;
+        background-color: #0053d6;
     }
 
     .btn-outline-primary {
-        color: #1e3a5f;
-        border-color: #1e3a5f;
+        color: #0053d6;
+        border-color: #0053d6;
     }
 
     .btn-outline-primary:hover,
     .btn-outline-primary:active,
     .btn-outline-primary:focus {
-        background-color: #1e3a5f;
+        background-color: #0053d6;
         color: #fff;
-        border-color: #1e3a5f;
+        border-color: #0053d6;
     }
 
 
@@ -100,6 +100,7 @@
     }
 </style>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     @yield('content')

@@ -60,9 +60,15 @@
     <!-- Teks Sambutan di Bawah -->
     <h2 class="fw-bold mb-3">Halo, Sobat!</h2>
     <p class="text-center mb-4">
-        Selamat datang di aplikasi <b>Suara Ku</b>.<br>
+        Selamat datang di aplikasi <b>Suaraku</b>.<br>
         Silakan isi data pribadimu untuk melanjutkan.
     </p>
+
+    <div class="mb-4 text-center">
+        <a href="{{ route('tentang-kami') }}" class="btn btn-sm btn-outline-light rounded-pill px-4">
+            <i class="fa-solid fa-circle-info me-1"></i> Tentang Kami
+        </a>
+    </div>
 </div>
 
 <!-- CSS Animasi -->
@@ -132,13 +138,36 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
     .then(res => res.json())
     .then(response => {
         if (response.status === 'success') {
-            alert('Selamat datang, ' + data.nama + '!');
-            window.location.href = response.redirect;
+            Swal.fire({
+                title: 'Selamat Datang!',
+                text: 'Halo, ' + data.nama + '! Data Anda berhasil disimpan.',
+                icon: 'success',
+                confirmButtonText: 'Lanjut',
+                confirmButtonColor: '#0053d6',
+                allowOutsideClick: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = response.redirect;
+                }
+            });
         } else {
-            alert('Terjadi kesalahan, coba lagi.');
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Terjadi kesalahan, coba lagi.',
+                icon: 'error',
+                confirmButtonColor: '#0053d6'
+            });
         }
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+        console.error(err);
+        Swal.fire({
+            title: 'Error!',
+            text: 'Terjadi kesalahan sistem.',
+            icon: 'error',
+            confirmButtonColor: '#0053d6'
+        });
+    });
 });
 </script>
 @endsection

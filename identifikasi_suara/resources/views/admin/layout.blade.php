@@ -28,7 +28,7 @@
     {{-- SIDEBAR --}}
     <aside class="admin-sidebar">
         <div class="sidebar-brand">
-            <img src="{{ asset('img/logo-suaraku-admin.png') }}" alt="Logo" class="brand-logo">
+            <img src="{{ asset('img/logo-suarakuu.png') }}" alt="Logo" width="100" class="brand-logo">
         </div>
 
         <div class="sidebar-section-title">ADMIN</div>
