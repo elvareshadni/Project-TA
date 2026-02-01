@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>@yield('title', 'Dashboard Admin')</title>
+    <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/png">
 
     {{-- Google Fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -26,9 +27,12 @@
 <div class="admin-wrapper">
 
     {{-- SIDEBAR --}}
-    <aside class="admin-sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="admin-sidebar" id="adminSidebar">
         <div class="sidebar-brand">
-            <img src="{{ asset('img/logo-suarakuu.png') }}" alt="Logo" width="100" class="brand-logo">
+            <a href="{{ route('admin.dashboard') }}">
+                <img src="{{ asset('img/logo-suarakuu.png') }}" alt="Logo" class="brand-logo">
+            </a>
         </div>
 
         <div class="sidebar-section-title">ADMIN</div>
@@ -41,6 +45,11 @@
         <a href="{{ route('admin.setting-waktu.index') }}"
            class="sidebar-link {{ request()->routeIs('admin.setting-waktu.index') ? 'active' : '' }}">
             <span>Setting Waktu </span>
+        </a>
+
+        <a href="{{ route('admin.users.index') }}"
+           class="sidebar-link {{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+            <span>Manajemen Admin</span>
         </a>
 
         {{-- Logout --}}
@@ -62,6 +71,11 @@
 
         {{-- TOPBAR --}}
         <header class="admin-topbar">
+            <!-- Toggle Button (Mobile) -->
+            <button class="btn btn-link text-white d-md-none me-3" id="sidebarToggle">
+                <i class="fa-solid fa-bars fa-lg"></i>
+            </button>
+            
             <div class="topbar-spacer"></div>
 
             <div class="topbar-user">
@@ -92,6 +106,28 @@
 {{-- Scripts --}}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @stack('scripts')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('adminSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        // Toggle Sidebar
+        if(toggleBtn && sidebar && overlay) {
+            toggleBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                overlay.classList.toggle('active');
+            });
+
+            // Close when clicking overlay
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('active');
+            });
+        }
+    });
+</script>
 
 </body>
 </html>

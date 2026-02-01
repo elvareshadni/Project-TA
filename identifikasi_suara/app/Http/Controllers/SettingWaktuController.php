@@ -17,11 +17,12 @@ class SettingWaktuController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'durasi' => 'required|in:1-2,3-5,9-10',
+            'durasi_min' => 'required|numeric|min:1',
+            'durasi_max' => 'required|numeric|gt:durasi_min',
         ]);
 
         $setting = SettingWaktu::first() ?? new SettingWaktu();
-        $setting->durasi = $request->durasi;
+        $setting->durasi = $request->durasi_min . '-' . $request->durasi_max;
         $setting->save();
 
         return back()->with('success', 'Durasi identifikasi berhasil disimpan.');

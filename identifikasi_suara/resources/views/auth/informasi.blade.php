@@ -11,6 +11,9 @@
 
             <div class="mb-3">
                 <input type="email" class="form-control" id="email" placeholder="Masukkan email" required>
+                <small style="font-style: italic; color: #6c757d;">
+                    *Pastikan email yang Anda masukkan aktif.
+                </small>
             </div>
 
             <div class="mb-3">
@@ -40,7 +43,7 @@
     </div>
 
     <!-- Bagian Sambutan -->
-<div class="info-section text-white d-flex flex-column justify-content-center align-items-center" 
+<div class="info-section text-white d-none d-md-flex flex-column justify-content-center align-items-center" 
      style="padding-top: 200px; height: auto;">
 
     <!-- Animasi Audio di Atas -->

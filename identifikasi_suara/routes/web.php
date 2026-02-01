@@ -49,12 +49,18 @@ Route::post('/save-user', function (Request $request) {
 Route::post('/identifikasi/simpan', [HasilIdentifikasiController::class, 'simpan'])
     ->name('identifikasi.simpan');
 
+Route::post('/identifikasi/preview', [HasilIdentifikasiController::class, 'preview'])
+    ->name('identifikasi.preview');
+
 // Group route ADMIN (harus login guard:admin)
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/rekap-data', [RekapDataController::class, 'index'])
         ->name('admin.rekap-data.index');
+
+    Route::get('/admin/rekap-data/csv', [RekapDataController::class, 'exportCsv'])
+    ->name('admin.rekap-data.csv');
 
     Route::get('/admin/rekap-data/{id}/pdf', [RekapDataController::class, 'printPdf'])
         ->name('admin.rekap-data.pdf');
@@ -67,9 +73,29 @@ Route::middleware('auth:admin')->group(function () {
 
     Route::post('/setting-waktu', [SettingWaktuController::class, 'update'])
         ->name('admin.setting-waktu.update');
+    Route::get('/admin/users', [App\Http\Controllers\AdminManagementController::class, 'index'])
+        ->name('admin.users.index');
+
+    Route::get('/admin/users/create', [App\Http\Controllers\AdminManagementController::class, 'create'])
+        ->name('admin.users.create');
+
+    Route::post('/admin/users', [App\Http\Controllers\AdminManagementController::class, 'store'])
+        ->name('admin.users.store');
+
+    Route::get('/admin/users/{id}/edit', [App\Http\Controllers\AdminManagementController::class, 'edit'])
+        ->name('admin.users.edit');
+
+    Route::put('/admin/users/{id}', [App\Http\Controllers\AdminManagementController::class, 'update'])
+        ->name('admin.users.update');
+
+    Route::delete('/admin/users/{id}', [App\Http\Controllers\AdminManagementController::class, 'destroy'])
+        ->name('admin.users.destroy');
 });
 
-Route::post('/logout', function () {
+Route::match(['get', 'post'], '/logout', function () {
     session()->flush();
     return redirect()->route('informasi');
 })->name('logout');
+
+
+

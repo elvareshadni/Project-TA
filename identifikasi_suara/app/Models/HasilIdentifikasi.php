@@ -16,6 +16,7 @@ class HasilIdentifikasi extends Model
         'usia',
         'sumber',
         'file_suara',
+        'durasi',
         'hasil',
         'akurasi',
         'distribution_by_emotion',
@@ -40,15 +41,26 @@ class HasilIdentifikasi extends Model
         $maxKey = '-';
 
         foreach ($distribution as $key => $val) {
-            // Pastikan val numerik
-            $numericVal = floatval($val);
+            // Ambil value numerik (handle jika formatnya array ['percent' => ...])
+            $numericVal = 0;
+            if (is_array($val) && isset($val['percent'])) {
+                $numericVal = floatval($val['percent']);
+            } elseif (is_numeric($val)) {
+                $numericVal = floatval($val);
+            }
+
             if ($numericVal > $maxVal) {
                 $maxVal = $numericVal;
                 $maxKey = $key;
             }
         }
 
-        // Opsional: Jika maxVal 0, mungkin return '-' atau tetap nama sukunya
+        // Jika semua 0 (maxVal 0), mungkin kita tetap return maxKey (yg ketemu terakhir/pertama > -1) 
+        // atau return '-' jika maxVal == 0
+        // Tapi logic awal: maxVal = -1, jadi 0 > -1 -> akan ambil yg 0 jika tidak ada yg lebih besar.
+        // Jika logic bisnis ingin "Dominan" harus > 0, bisa disesuaikan. 
+        // Untuk sekarang kita ikuti logic "tertinggi".
+        
         return $maxKey;
     }
 }

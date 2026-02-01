@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUARA KU - Identifikasi Emosi Suara</title>
+    <link rel="icon" href="./img/favicon.png" type="image/png">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -14,13 +15,15 @@
     <!-- jsPDF & AutoTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <header>
     <div class="logo">
-        <img src="./img/logo-suarakuu.png" alt="Logo Suara Ku" width="130" class="logo-img">
+        <a href="{{ route('home.dashboard') }}">
+            <img src="./img/logo-suarakuu.png" alt="Logo Suara Ku" width="130" class="logo-img">
+        </a>
     </div>
     <nav>
         <span class="username">
@@ -41,6 +44,8 @@
   </div>
 
   {{-- TOGGLE BUTTONS --}}
+  {{-- ================== 1. INPUT SECTION ================== --}}
+  <div id="inputSection">
   <div class="toggle-container">
       <button class="toggle-btn" id="btnRecord" onclick="switchTab('record')">Rekam Langsung</button>
       <button class="toggle-btn active" id="btnUpload" onclick="switchTab('upload')">Unggah File Audio</button>
@@ -60,17 +65,17 @@
         </div>
 
         <div id="audioPlayerSection" class="hidden" style="display:none;">
-          <div id="fileNameDisplay" class="file-name" style="margin-top:10px; font-weight:600; display:none; text-align:right;"></div>
+          <div id="fileNameDisplay" class="file-name" style="margin-top:5px; font-weight:600; display:none; text-align:right;"></div>
 
           <!-- WaveSurfer Container for Upload -->
-          <div id="uploadWaveform" style="width:100%; margin-top:20px;"></div>
+          <div id="uploadWaveform" style="width:100%; margin-top:10px;"></div>
            <!-- Controls for Upload Player -->
-          <div class="audio-controls" style="margin-top:10px; justify-content:center;">
+          <div class="audio-controls" style="margin-top:5px; justify-content:center;">
              <button id="btnPlayUpload" class="play-control" onclick="togglePlayUpload()">
                 <i class="fa-solid fa-play" id="iconPlayUpload"></i>
              </button>
           </div>
-          <div id="uploadTimer" style="text-align:center; margin-top:5px; font-weight:500; font-family:monospace; color:#333;">00:00</div>
+          <div id="uploadTimer" style="text-align:center; margin-top:2px; font-weight:500; font-family:monospace; color:#333;">00:00</div>
 
           <div class="action-buttons">
             <button class="btn-mulai" onclick="analyzeAudio()">Mulai Analisis</button>
@@ -87,58 +92,7 @@
         </div>
       </div>
 
-      <div id="uploadResultSection" style="display:none;">
-        <div class="result-box-container">
-          <div class="result-box">
-            <h4 class="chart-title">Hasil Identifikasi Emosi</h4>
-            <div class="bar-chart">
-              <div class="bar-label">Happy <span id="u_happyVal">0%</span></div>
-              <div class="bar happy" id="u_happyBar" style="width:0%"></div>
 
-              <div class="bar-label">Sad <span id="u_sadVal">0%</span></div>
-              <div class="bar sad" id="u_sadBar" style="width:0%"></div>
-
-              <div class="bar-label">Angry <span id="u_angryVal">0%</span></div>
-              <div class="bar angry" id="u_angryBar" style="width:0%"></div>
-
-              <div class="bar-label">Surprised <span id="u_surprisedVal">0%</span></div>
-              <div class="bar surprised" id="u_surprisedBar" style="width:0%"></div>
-
-              <div class="bar-label">Neutral <span id="u_neutralVal">0%</span></div>
-              <div class="bar neutral" id="u_neutralBar" style="width:0%"></div>
-            </div>
-          </div>
-
-          <div class="result-box">
-            <h4 class="chart-title">Hasil Identifikasi Suku</h4>
-            <div class="bar-chart" id="u_sukuBars"></div>
-          </div>
-        </div>
-
-        <div class="main-result merged-result" id="u_mainMergedResult">
-          <div class="merged-item" style="display: flex; align-items: center; gap: 15px; justify-content: center;">
-              <img src="./img/neutral.png" id="u_emojiIcon" style="width: 80px; height: 80px; object-fit: contain;">
-              <div style="text-align: left;">
-                  <h3 id="u_mainEmotion" style="margin: 0; font-size: 1.5rem; color: #1e293b;">-</h3>
-                  <p id="u_mainPercent" style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #3b82f6;">-</p>
-              </div>
-          </div>
-          <div class="separator"></div>
-          <div class="merged-item" style="display: flex; align-items: center; gap: 15px; justify-content: center;">
-              <img src="./img/betawi.png" id="u_sukuEmojiIcon" style="width: 100px; height: 100px; object-fit: contain;">
-              <div style="text-align: left;">
-                  <h3 id="u_sukuDominant" style="margin: 0; font-size: 1.5rem; color: #1e293b;">-</h3>
-                  <p id="u_sukuDominantPercent" style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #3b82f6;">-</p>
-              </div>
-          </div>
-        </div>
-
-        <div style="text-align:right; margin-top:10px;">
-          <button class="btn-save" onclick="generatePDF()" style="margin-top:0;">
-              Simpan Hasil ke PDF
-          </button>
-        </div>
-      </div>
   </div>
 
   {{-- ================== RECORD CONTAINER ================== --}}
@@ -149,23 +103,37 @@
           Kenali emosi dalam rekaman suara Anda secara langsung menggunakan teknologi Speech Emotion Recognition (SER).
           Cukup rekam atau ucapkan suara Anda untuk mendeteksi emosi dan suku secara real-time.
         </p>
-        <p class="click-text">Klik tombol mikrofon untuk mulai merekam</p>
-
-        <div class="mic-button" id="micButton" onclick="toggleRecording()">
-            <div class="mic-icon">🎙</div>
+        <!-- Initial Prompt State -->
+        <div id="recordingStartPrompt">
+            <p class="click-text">Klik tombol mikrofon untuk mulai merekam</p>
+            <div class="mic-button" id="micButton" onclick="toggleRecording()">
+                <div class="mic-icon">🎙</div>
+            </div>
         </div>
 
         <!-- Visualisasi Real-time saat merekam -->
-        <div id="recordingVisualizerContainer" class="hidden" style="width:100%; height:100px; margin-bottom:20px;">
+        <div id="recordingVisualizerContainer" class="hidden" style="width:100%; height:100px; margin-bottom:20px; display:none;">
             <canvas id="recordingVisualizer" style="width:100%; height:100%;"></canvas>
         </div>
 
-        <div id="recordingIndicator" class="recording-indicator hidden">
-            <div class="red-dot"></div>
-            <span>Merekam...</span>
-        </div>
+        <!-- Active Recording State (Hidden by default) -->
+        <div id="recordingActiveControls" class="hidden" style="display: none; align-items: center; justify-content: space-between; width: 100%; max-width: 600px; margin: 20px auto; padding: 10px;">
+            <!-- Timer Section -->
+            <div style="display: flex; align-items: center; gap: 10px;">
+                 <div class="red-dot-active" style="width: 20px; height: 20px; border-radius: 50%; background-color: #ef4444; border: 4px solid #fecaca;"></div>
+                 <div class="timer" id="recordTimer" style="font-size: 1rem; font-weight: 500; font-family: monospace; color: #1e293b; margin: 0;">00:00 / 05:00</div>
+            </div>
 
-        <div class="timer" id="recordTimer">00:00</div>
+            <!-- Controls Section -->
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button id="btnPauseResume" onclick="pauseResumeRecording()" style="display: flex; align-items: center; gap: 8px; padding: 8px 20px; border: 2px solid #3b82f6; background: transparent; color: #3b82f6; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    <i class="fa-solid fa-pause"></i> <span id="pauseText">Pause</span>
+                </button>
+                <button onclick="stopRecording()" style="display: flex; align-items: center; gap: 8px; padding: 10px 24px; background-color: #3b82f6; border: none; color: white; border-radius: 8px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5); transition: all 0.2s;">
+                    <div style="width: 12px; height: 12px; background-color: white; border-radius: 2px;"></div> Stop
+                </button>
+            </div>
+        </div>
 
         <div id="recordPlayerSection" class="hidden">
            <!-- WaveSurfer Container for Record -->
@@ -194,65 +162,146 @@
         </div>
       </div>
 
-      <div id="recordResultSection" class="result-container" style="display:none; margin-top:20px;">
-        <div class="result-box-container">
-          <div class="result-box">
-            <h4 class="chart-title">Hasil Identifikasi Emosi</h4>
-            <div class="bar-chart">
-              <div class="bar-label">Happy <span id="r_happyVal">0%</span></div>
-              <div class="bar happy" id="r_happyBar" style="width:0%"></div>
 
-              <div class="bar-label">Sad <span id="r_sadVal">0%</span></div>
-              <div class="bar sad" id="r_sadBar" style="width:0%"></div>
+  </div>
+  </div> {{-- inputSection --}}
 
-              <div class="bar-label">Angry <span id="r_angryVal">0%</span></div>
-              <div class="bar angry" id="r_angryBar" style="width:0%"></div>
-
-              <div class="bar-label">Surprised <span id="r_surprisedVal">0%</span></div>
-              <div class="bar surprised" id="r_surprisedBar" style="width:0%"></div>
-
-              <div class="bar-label">Neutral <span id="r_neutralVal">0%</span></div>
-              <div class="bar neutral" id="r_neutralBar" style="width:0%"></div>
-            </div>
-          </div>
-
-          <div class="result-box">
-            <h4 class="chart-title">Hasil Identifikasi Suku</h4>
-            <div class="bar-chart" id="r_sukuBars"></div>
-          </div>
-        </div>
-
-        <div class="main-result merged-result" id="r_mainMergedResult">
-            <div class="merged-item" style="display: flex; align-items: center; gap: 15px; justify-content: center;">
-                <img src="./img/neutral.png" alt="emoji" id="r_emojiIcon" style="width: 80px; height: 80px; object-fit: contain;">
-                <div style="text-align: left;">
-                    <h3 id="r_mainEmotion" style="margin: 0; font-size: 1.5rem; color: #1e293b;">-</h3>
-                    <p id="r_mainPercent" style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #3b82f6;">-</p>
-                </div>
-            </div>
-            <div class="separator"></div>
-            <div class="merged-item" style="display: flex; align-items: center; gap: 15px; justify-content: center;">
-                <img src="./img/betawi.png" alt="emoji" id="r_sukuEmojiIcon" style="width: 80px; height: 80px; object-fit: contain;">
-                <div style="text-align: left;">
-                    <h3 id="r_sukuDominant" style="margin: 0; font-size: 1.5rem; color: #1e293b;">-</h3>
-                    <p id="r_sukuDominantPercent" style="margin: 0; font-size: 1.25rem; font-weight: 600; color: #3b82f6;">-</p>
-                </div>
-            </div>
-        </div>
-
-        <div style="text-align:right; margin-top:10px;">
-          <button class="btn-save" onclick="generatePDFRecord()" style="margin-top:0;">
-              Simpan Hasil ke PDF
-          </button>
-        </div>
+  {{-- ================== 2. LOADING SECTION ================== --}}
+  <div id="loadingSection">
+      <div class="modern-loader">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
       </div>
+      <p class="loading-text">Sedang Menganalisis Suara...</p>
+      <p style="color: #64748b; font-size: 0.95rem;">Mohon tunggu, AI kami sedang mengenali emosi Anda</p>
+  </div>
+
+
+  {{-- ================== 3. RESULT SECTION (Unified) ================== --}}
+  <div id="resultSection">
+    <div class="unified-result-container">
+        <!-- Tombol "Kembali / Analisis Lagi" di atas -->
+        <button class="btn-back-home" onclick="resetToInput()">
+            <i class="fa-solid fa-arrow-left"></i> Analisis Lagi
+        </button>
+        
+        <!-- Reuse existing result structure but accessible via IDs -->
+        <div id="unifiedResultBody" style="display: flex; flex-direction: column; gap: 0;">
+            
+            <div class="result-box-container" style="justify-content: space-between; align-items: stretch; gap: 20px; width: 100%; max-width: 1050px; margin: 0 auto;">
+          
+              <!-- 1. Emotion -->
+              <div class="result-box" style="flex: 1; width: auto; max-width: none; background: #ffffff; border-radius: 15px; padding: 15px;">
+                <h4 class="chart-title" style="text-align: center;">Hasil Identifikasi Emosi</h4>
+                <div class="bar-chart">
+                  <div class="bar-label">Happy &nbsp;<span id="res_happyVal">0%</span></div>
+                  <div class="bar happy" id="res_happyBar" style="width:0%"></div>
+
+                  <div class="bar-label">Sad &nbsp;<span id="res_sadVal">0%</span></div>
+                  <div class="bar sad" id="res_sadBar" style="width:0%"></div>
+
+                  <div class="bar-label">Angry &nbsp;<span id="res_angryVal">0%</span></div>
+                  <div class="bar angry" id="res_angryBar" style="width:0%"></div>
+
+                  <div class="bar-label">Surprised &nbsp;<span id="res_surprisedVal">0%</span></div>
+                  <div class="bar surprised" id="res_surprisedBar" style="width:0%"></div>
+
+                  <div class="bar-label">Neutral &nbsp;<span id="res_neutralVal">0%</span></div>
+                  <div class="bar neutral" id="res_neutralBar" style="width:0%"></div>
+                </div>
+              </div>
+
+              <!-- 2. Suku -->
+               <div class="result-box" style="flex: 1; width: auto; max-width: none; background: #ffffff; border-radius: 15px; padding: 15px;">
+                <h4 class="chart-title" style="text-align: center;">Hasil Identifikasi Suku</h4>
+                <div class="bar-chart" id="res_sukuBars"></div>
+              </div>
+              
+              <!-- 3. Dominant Result -->
+              <div class="merged-result" id="res_mainMergedResult" style="flex: 0 0 200px; width: auto; max-width: none; margin: 0; padding: 15px 10px; display: flex; flex-direction: column; justify-content: center; gap: 20px; background: #ffffff; border-radius: 15px;">
+                 <!-- Emotion Dom -->
+                 <div class="merged-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                     <img src="./img/neutral.png" alt="emoji" id="res_emojiIcon" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 5px;">
+                     <h3 id="res_mainEmotion" style="margin: 0; font-size: 1.1rem; color: #1e293b;">-</h3>
+                     <p id="res_mainPercent" style="margin: 0; font-size: 1.1rem; font-weight: 600; color: #3b82f6;">-</p>
+                 </div>
+                 
+                 <!-- Separator -->
+                 <div style="width: 80%; height: 1px; background: #cbd5e1; margin: 0 auto;"></div>
+
+                 <!-- Suku Dom -->
+                 <div class="merged-item" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                     <img src="./img/betawi.png" alt="emoji" id="res_sukuEmojiIcon" style="width: 60px; height: 60px; object-fit: contain; margin-bottom: 5px;">
+                     <h3 id="res_sukuDominant" style="margin: 0; font-size: 1.1rem; color: #1e293b;">-</h3>
+                     <p id="res_sukuDominantPercent" style="margin: 0; font-size: 1.1rem; font-weight: 600; color: #3b82f6;">-</p>
+                 </div>
+              </div>
+
+            </div>
+
+            <!-- Email Notification (Replaces PDF Buttons) -->
+            <!-- Email Notification & Save Status -->
+            <!-- Email Notification & Save Status -->
+            <div id="saveStatusContainer" style="margin-top:30px; width: 100%; max-width: 1050px; margin: 20px auto; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+               
+               <!-- Preview Button (Left Side) -->
+               <div>
+                   <button onclick="previewResult()" style="background-color: #0d9488; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px;">
+                       <i class="fa-solid fa-eye"></i> Pratinjau Hasil
+                   </button>
+               </div>
+
+               <!-- Status Messages (Right Side / Flex Grow) -->
+               <div style="flex: 1; text-align: right;">
+                   <!-- Loading State -->
+                   <div id="saveLoading" style="display:none; color: #64748b; font-weight: 500;">
+                      <i class="fa-solid fa-spinner fa-spin"></i> &nbsp; Menyimpan data & mengirim email...
+                   </div>
+
+                   <!-- Success State -->
+                   <div id="saveSuccess" style="display:none; background: #dbeafe; color: #1e40af; padding: 15px; border-radius: 8px; border: 1px solid #bfdbfe; font-weight: 500; text-align: center;">
+                      <i class="fa-solid fa-envelope-circle-check"></i> &nbsp;
+                      Hasil analisis berhasil disimpan & dikirim ke email: <strong>{{ session('email') }}</strong>
+                   </div>
+
+                   <!-- Error State -->
+                   <div id="saveError" style="display:none; background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 8px; border: 1px solid #fecaca; font-weight: 500; text-align: center;">
+                      <i class="fa-solid fa-circle-exclamation"></i> &nbsp;
+                      <span id="saveErrorMessage">Gagal menyimpan data.</span>
+                   </div>
+               </div>
+            </div>
+
+            <!-- Hidden Form for Preview -->
+            <form id="previewForm" action="{{ route('identifikasi.preview') }}" method="POST" target="_blank" style="display:none;">
+                @csrf
+                <input type="hidden" name="sumber" id="prev_sumber">
+                <input type="hidden" name="file_suara" id="prev_file_suara">
+                <input type="hidden" name="durasi" id="prev_durasi">
+                <input type="hidden" name="hasil" id="prev_hasil">
+                <input type="hidden" name="akurasi" id="prev_akurasi">
+                <!-- Encode JSON for arrays -->
+                <input type="hidden" name="distribution_by_emotion" id="prev_dist_emotion">
+                <input type="hidden" name="distribution_by_suku" id="prev_dist_suku">
+                
+                <input type="hidden" name="nama" value="{{ session('username') }}">
+                <input type="hidden" name="email" value="{{ session('email') }}">
+                <input type="hidden" name="gender" value="{{ session('gender') }}">
+                <input type="hidden" name="usia" value="{{ session('usia') }}">
+            </form>
+        </div>
+    </div>
   </div>
 </section>
 
 <script>
 const API_BASE = "http://127.0.0.1:5000";
-const MAX_RECORD_SECONDS = {{ $maxSeconds ?? 300 }};
+const MAX_RECORD_SECONDS = {{ $maxSeconds ?? 300 }}; // 5 minutes default
 const MIN_RECORD_SECONDS = {{ $minSeconds ?? 180 }};
+const MAX_RECORD_STR = formatTime(MAX_RECORD_SECONDS);
 
 /* ===== MENU TOGGLE ===== */
 function switchTab(tab) {
@@ -276,6 +325,7 @@ function switchTab(tab) {
 
 /* ===== GLOBAL STATE ===== */
 let isRecording = false;
+let isPaused = false; // New state
 let audioContext;
 let mediaStream;
 // let mediaSource; // Tidak dipakai lagi untuk record, hanya visualizer
@@ -293,6 +343,8 @@ let wsRecord;
 // Last Results for PDF
 let lastUploadResult = null;
 let lastRecordResult = null;
+let currentResult = null; // Store active result for preview
+let currentSource = null; // 'upload' or 'record'
 
 /* ===== INIT WAVESURFER ===== */
 document.addEventListener('DOMContentLoaded', () => {
@@ -320,10 +372,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Timer events for Upload
     wsUpload.on('timeupdate', (currentTime) => {
-        document.getElementById('uploadTimer').innerText = formatTime(currentTime);
+        const duration = wsUpload.getDuration();
+        document.getElementById('uploadTimer').innerText = formatTime(currentTime) + " / " + formatTime(duration);
     });
     wsUpload.on('ready', (duration) => {
-        document.getElementById('uploadTimer').innerText = "00:00";
+        document.getElementById('uploadTimer').innerText = "00:00 / " + formatTime(duration);
     });
 
     // Init Visualizer Record (Playback)
@@ -351,10 +404,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     // Timer events for Record Playback
     wsRecord.on('timeupdate', (currentTime) => {
-        document.getElementById('recordTimerPlayback').innerText = formatTime(currentTime);
+        const duration = wsRecord.getDuration();
+        document.getElementById('recordTimerPlayback').innerText = formatTime(currentTime) + " / " + formatTime(duration);
     });
     wsRecord.on('ready', (duration) => {
-        document.getElementById('recordTimerPlayback').innerText = "00:00";
+        document.getElementById('recordTimerPlayback').innerText = "00:00 / " + formatTime(duration);
     });
 
     // Logout Confirmation
@@ -389,6 +443,7 @@ function togglePlayRecord() {
 
 
 /* ================= TIMER ================= */
+/* ================= TIMER ================= */
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -396,28 +451,76 @@ function formatTime(seconds) {
 }
 let recordingStartTime;
 let timerInterval;
+let pausedTime = 0; // Accumulate paused duration
+let pauseStart = 0; // When pause started
+
 function startTimer() {
     recordingStartTime = Date.now();
+    pausedTime = 0;
+    
     timerInterval = setInterval(() => {
-        // ... (existing timer logic)
-        const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
-        document.getElementById('recordTimer').textContent = formatTime(elapsed);
+        if(isPaused) return;
 
-        if (elapsed >= MAX_RECORD_SECONDS && isRecording) {
-            toggleRecording(true); // true = force stop because limit reached
+        const now = Date.now();
+        const totalElapsed = Math.floor((now - recordingStartTime - pausedTime) / 1000);
+        
+        document.getElementById('recordTimer').textContent = `${formatTime(totalElapsed)} / ${MAX_RECORD_STR}`;
+
+        if (totalElapsed >= MAX_RECORD_SECONDS && isRecording) {
+            stopRecording(true); // true = force stop because limit reached
             alert('Waktu rekaman sudah mencapai batas maksimal yang diizinkan.');
         }
     }, 1000);
 }
 function stopTimer() { clearInterval(timerInterval); }
 
+function pauseResumeRecording() {
+    if(!isRecording || !recorder) return;
+    
+    const btn = document.getElementById('btnPauseResume');
+    const icon = btn.querySelector('i');
+    const text = document.getElementById('pauseText');
+
+    if(isPaused) {
+        // RESUME
+        recorder.resumeRecording();
+        isPaused = false;
+        
+        // Timer adjustment
+        pausedTime += (Date.now() - pauseStart);
+        
+        icon.className = 'fa-solid fa-pause';
+        text.innerText = 'Pause';
+        
+        // Resume Visualizer if needed (optional)
+        if(audioContext && audioContext.state === 'suspended') audioContext.resume();
+        
+    } else {
+        // PAUSE
+        recorder.pauseRecording();
+        isPaused = true;
+        pauseStart = Date.now();
+        
+        icon.className = 'fa-solid fa-play';
+        text.innerText = 'Resume';
+        
+         // Suspend Visualizer to save resources or just pause effect
+        if(audioContext && audioContext.state === 'running') audioContext.suspend();
+    }
+}
+
+function stopRecording(forceStop = false) {
+    toggleRecording(forceStop); // Reuse existing logic but ensure it triggers stop
+}
+
 /* ============ HELPER WAVEFORM (DELETED) ============ */
 // drawStaticWaveform & cursor functions deleted as replaced by WaveSurfer
 
 /* ============ REKAM → WAV (RecordRTC) ============ */
 async function toggleRecording(forceStop = false) {
-    const micButton = document.getElementById('micButton');
-    const indicator = document.getElementById('recordingIndicator');
+    const promptDiv = document.getElementById('recordingStartPrompt');
+    const controlsDiv = document.getElementById('recordingActiveControls');
+    const vizContainer = document.getElementById('recordingVisualizerContainer'); // Ensure this defined in HTML
 
     if (!isRecording) {
         // START RECORDING
@@ -445,11 +548,18 @@ async function toggleRecording(forceStop = false) {
             recorder.startRecording();
             
             isRecording = true;
-            micButton.classList.add('recording');
+            isPaused = false;
             
-            document.getElementById('recordingIndicator').classList.add('hidden'); 
-            const vizContainer = document.getElementById('recordingVisualizerContainer');
-            vizContainer.classList.remove('hidden');
+            // UI Update
+            promptDiv.style.display = 'none';
+            controlsDiv.style.display = 'flex';
+            controlsDiv.classList.remove('hidden');
+            
+            // Re-show visualizer if it was hidden
+            if(vizContainer) {
+                 vizContainer.classList.remove('hidden');
+                 vizContainer.style.display = 'block'; // Ensure display
+            }
             
             startRealtimeVisualizer(); 
             startTimer();
@@ -459,9 +569,9 @@ async function toggleRecording(forceStop = false) {
         }
     } else {
         // STOP RECORDING
-        const duration = Math.floor((Date.now() - recordingStartTime) / 1000);
+        const duration = Math.floor((Date.now() - recordingStartTime - pausedTime) / 1000);
 
-        // Check Min Duration (unless forceStop by Timer)
+        // Check Min Duration
         if (!forceStop && duration < MIN_RECORD_SECONDS) {
             const minMins = Math.floor(MIN_RECORD_SECONDS / 60);
              Swal.fire({
@@ -469,14 +579,23 @@ async function toggleRecording(forceStop = false) {
                 title: 'Durasi Kurang',
                 text: `Durasi minimal adalah ${minMins} menit.`,
             });
-            return; // Don't stop yet, let user continue
+            return; // Don't stop
         }
 
         stopTimer();
         isRecording = false;
-        micButton.classList.remove('recording');
         
-        document.getElementById('recordingVisualizerContainer').classList.add('hidden');
+        // Reset UI
+        controlsDiv.style.display = 'none';
+        controlsDiv.classList.add('hidden');
+        // promptDiv.style.display = 'block'; // Keep hidden until we decide what to show? Or show result?
+        // Actually, existing flow shows "analyze/cancel" buttons in `recordPlayerSection`.
+        // So promptDiv stays hidden until Cancel is clicked.
+        
+        if(vizContainer) {
+            vizContainer.classList.add('hidden');
+            vizContainer.style.display = 'none';
+        }
         if(visualizerAnimationId) cancelAnimationFrame(visualizerAnimationId);
 
         // Stop RecordRTC
@@ -488,7 +607,6 @@ async function toggleRecording(forceStop = false) {
              if (mediaStream) mediaStream.getTracks().forEach(t => t.stop());
              
              // Load into WaveSurfer
-             // wsRecord.loadBlob(recordedWavBlob); // WaveSurfer 7 supports loadBlob or url
              const audioUrl = URL.createObjectURL(recordedWavBlob);
              wsRecord.load(audioUrl);
              
@@ -499,50 +617,49 @@ async function toggleRecording(forceStop = false) {
 
 
 /* ============ LOADING HELPERS ============ */
-function startLoadingUpload() {
-  const box = document.getElementById('uploadLoading');
-  const btn = document.querySelector('.upload-container .btn-mulai');
-  if (box) box.style.display = 'flex';
-  if (btn) btn.disabled = true;
-  let prog = 10;
-  const bar = document.getElementById('uploadProgressBar');
-  box._interval = setInterval(() => {
-    prog += Math.floor(Math.random() * 8) + 3;
-    if (prog > 90) prog = 90;
-    if (bar) bar.style.width = prog + '%';
-  }, 400);
-}
-function stopLoadingUpload(success = true) {
-  const box = document.getElementById('uploadLoading');
-  const btn = document.querySelector('.upload-container .btn-mulai');
-  const bar = document.getElementById('uploadProgressBar');
-  if (bar) bar.style.width = success ? '100%' : '0%';
-  if (box && box._interval) clearInterval(box._interval);
-  setTimeout(() => { if (box) box.style.display = 'none'; }, 450);
-  if (btn) btn.disabled = false;
+/* ============ PAGE NAVIGATION ============ */
+function showLoadingPage() {
+    document.getElementById('inputSection').style.display = 'none';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('loadingSection').style.display = 'flex';
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function startLoadingRecord() {
-  const box = document.getElementById('recordLoading');
-  const btn = document.querySelector('#recordPlayerSection .btn-mulai');
-  if (box) box.style.display = 'flex';
-  if (btn) btn.disabled = true;
-  let prog = 10;
-  const bar = document.getElementById('recordProgressBar');
-  box._interval = setInterval(() => {
-    prog += Math.floor(Math.random() * 8) + 3;
-    if (prog > 90) prog = 90;
-    if (bar) bar.style.width = prog + '%';
-  }, 400);
+function showResultPage(result, source = 'unknown') {
+    currentResult = result;
+    currentSource = source;
+
+    document.getElementById('loadingSection').style.display = 'none';
+    document.getElementById('inputSection').style.display = 'none';
+    const resSec = document.getElementById('resultSection');
+    resSec.style.display = 'block'; 
+    
+    // Reset Save Status
+    document.getElementById('saveLoading').style.display = 'none';
+    document.getElementById('saveSuccess').style.display = 'none';
+    document.getElementById('saveError').style.display = 'none'; 
+    
+    // Hide Logo / Header
+    const header = document.querySelector('.section-header');
+    if(header) header.style.display = 'none';
+
+    // Fill data
+    fillResult('res_', result);
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-function stopLoadingRecord(success = true) {
-  const box = document.getElementById('recordLoading');
-  const btn = document.querySelector('#recordPlayerSection .btn-mulai');
-  const bar = document.getElementById('recordProgressBar');
-  if (bar) bar.style.width = success ? '100%' : '0%';
-  if (box && box._interval) clearInterval(box._interval);
-  setTimeout(() => { if (box) box.style.display = 'none'; }, 450);
-  if (btn) btn.disabled = false;
+
+function resetToInput() {
+    document.getElementById('loadingSection').style.display = 'none';
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('inputSection').style.display = 'block';
+    
+    // Show Header again
+    const header = document.querySelector('.section-header');
+    if(header) header.style.display = 'block';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* ============ REAL-TIME VISUALIZER (SCROLLING) ============ */
@@ -567,6 +684,7 @@ function startRealtimeVisualizer() {
     
     function draw() {
         visualizerAnimationId = requestAnimationFrame(draw);
+        if (isPaused) return;
         
         analyser.getByteTimeDomainData(dataArray);
         
@@ -614,7 +732,8 @@ function startRealtimeVisualizer() {
 }
 
 /* ============ SIMPAN KE LARAVEL ============ */
-async function simpanKeLaravel(source, result, fileName = null) {
+/* ============ SIMPAN KE LARAVEL ============ */
+async function simpanKeLaravel(source, result, fileName = null, durationStr = null) {
     try {
         const token = document
             .querySelector('meta[name="csrf-token"]')
@@ -628,7 +747,7 @@ async function simpanKeLaravel(source, result, fileName = null) {
         const dominantEmotion = result.dominant_emotion || result.mainEmotion || "-";
         const accuracy        = result.accuracy ?? null;
 
-        await fetch("{{ route('identifikasi.simpan') }}", {
+        const response = await fetch("{{ route('identifikasi.simpan') }}", {
             method: "POST",
             headers: {
                 "X-CSRF-TOKEN": token,
@@ -638,6 +757,7 @@ async function simpanKeLaravel(source, result, fileName = null) {
             body: JSON.stringify({
                 sumber: source,
                 file_suara: fileName,
+                durasi: durationStr,
 
                 hasil:   dominantEmotion,
                 akurasi: accuracy,
@@ -651,8 +771,18 @@ async function simpanKeLaravel(source, result, fileName = null) {
                 usia:   usia,
             }),
         });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+            throw new Error(json.message || 'Server returned error ' + response.status);
+        }
+        
+        return json;
+
     } catch (e) {
         console.error('Gagal menyimpan rekap ke Laravel:', e);
+        throw e; // Rethrow to handle in caller
     }
 }
 
@@ -666,7 +796,7 @@ async function analyzeRecording() {
     const formData = new FormData();
     formData.append('file', recordedWavBlob, 'rekaman.wav');
 
-    startLoadingRecord();
+    showLoadingPage();
 
     try {
         const response = await fetch(`${API_BASE}/analyze-audio`, {
@@ -676,19 +806,40 @@ async function analyzeRecording() {
 
         const text = await response.text();
         if (!response.ok) {
-            stopLoadingRecord(false);
+            resetToInput();
             throw new Error(text);
         }
 
         const result = JSON.parse(text);
-        lastRecordResult = result; // Store for PDF
-        document.getElementById('recordResultSection').style.display = 'flex';
-        fillResult('r_', result);
+        lastRecordResult = result; 
+        
+        const fileName = "rekaman_" + Date.now() + ".wav";
+        const durationStr = formatTime(wsRecord.getDuration());
+        
 
-        simpanKeLaravel('record', result, null);
-        stopLoadingRecord(true);
+        
+        showResultPage(result, 'record');
+
+        // Handle Saving & Email
+        const saveLoading = document.getElementById('saveLoading');
+        const saveSuccess = document.getElementById('saveSuccess');
+        const saveError   = document.getElementById('saveError');
+        
+        saveLoading.style.display = 'block';
+
+        try {
+            await simpanKeLaravel('record', result, fileName, durationStr);
+            saveLoading.style.display = 'none';
+            saveSuccess.style.display = 'block';
+        } catch (e) {
+            saveLoading.style.display = 'none';
+            saveError.style.display = 'block';
+            document.getElementById('saveErrorMessage').innerText = "Gagal menyimpan: " + e.message;
+        }
+
     } catch (err) {
         console.error(err);
+        resetToInput();
         alert('Gagal menganalisis rekaman: ' + err.message);
     }
 }
@@ -696,7 +847,7 @@ async function analyzeRecording() {
 function cancelRecording() {
     recordedWavBlob = null;
     stopTimer();
-    document.getElementById('recordTimer').textContent = '00:00';
+    document.getElementById('recordTimer').textContent = `00:00 / ${MAX_RECORD_STR}`;
 
     const playerSection = document.getElementById('recordPlayerSection');
     playerSection.classList.add('hidden');
@@ -704,19 +855,18 @@ function cancelRecording() {
     // Reset WaveSurfer Record
     if(wsRecord) {
         wsRecord.empty();
-        // Icon update handled by event listener, but force reset here just in case
-        // document.getElementById('iconPlayRecord').className = 'fa-solid fa-play'; 
-        // Actually event listener might not fire on empty(), so better reset manually if needed or leave it.
-        // Let's reset it manually to be safe.
         document.getElementById('iconPlayRecord').className = 'fa-solid fa-play';
     }
 
-    document.getElementById('recordResultSection').style.display = 'none';
 
-    const micButton = document.getElementById('micButton');
-    const indicator = document.getElementById('recordingIndicator');
-    micButton.classList.remove('recording');
-    indicator.classList.add('hidden');
+
+    // Show Prompt again
+    document.getElementById('recordingStartPrompt').style.display = 'block';
+    
+    // Hide controls
+    const controlsDiv = document.getElementById('recordingActiveControls');
+    controlsDiv.style.display = 'none';
+    controlsDiv.classList.add('hidden');
 
     if (mediaStream) {
         mediaStream.getTracks().forEach(track => track.stop());
@@ -725,10 +875,12 @@ function cancelRecording() {
     if (audioContext) audioContext.close();
     
     // Stop Realtime Visualizer
-    document.getElementById('recordingVisualizerContainer').classList.add('hidden');
+    const vizContainer = document.getElementById('recordingVisualizerContainer');
+    if(vizContainer) vizContainer.classList.add('hidden');
     if(visualizerAnimationId) cancelAnimationFrame(visualizerAnimationId);
 
     isRecording = false;
+    isPaused = false;
 }
 
 /* ============ UPLOAD FILE ============ */
@@ -756,12 +908,22 @@ async function handleFileSelect(e) {
     if(wsUpload) {
         wsUpload.load(audioUrl);
     }
+    
+    // Hide Upload Area
+    document.getElementById('uploadArea').style.display = 'none';
+    
+    // Auto-scroll to player section
+    setTimeout(() => {
+        document.getElementById('audioPlayerSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 }
 
 function cancelUpload() {
   document.getElementById('fileInput').value = '';
   document.getElementById('audioPlayerSection').style.display = 'none';
-  document.getElementById('uploadResultSection').style.display = 'none';
+
+  // Show Upload Area again
+  document.getElementById('uploadArea').style.display = '';
   
   if(wsUpload) {
       wsUpload.empty();
@@ -780,7 +942,7 @@ async function analyzeAudio() {
   const formData = new FormData();
   formData.append('file', file);
 
-  startLoadingUpload();
+  showLoadingPage();
 
   try {
     const response = await fetch(`${API_BASE}/analyze-audio`, {
@@ -790,21 +952,38 @@ async function analyzeAudio() {
 
     const text = await response.text();
     if (!response.ok) {
-      stopLoadingUpload(false);
+      resetToInput();
       throw new Error(text);
     }
 
     const result = JSON.parse(text);
-    lastUploadResult = result; // Store for PDF
-    document.getElementById('uploadResultSection').style.display = 'flex';
-    fillResult('u_', result);
-
+    lastUploadResult = result; 
+    
     const fileName = file ? file.name : null;
-    simpanKeLaravel('upload', result, fileName);
+    const durationStr = formatTime(wsUpload.getDuration());
 
-    stopLoadingUpload(true);
+    showResultPage(result, 'upload');
+
+    // Handle Saving & Email
+    const saveLoading = document.getElementById('saveLoading');
+    const saveSuccess = document.getElementById('saveSuccess');
+    const saveError   = document.getElementById('saveError');
+    
+    saveLoading.style.display = 'block';
+
+    try {
+        await simpanKeLaravel('upload', result, fileName, durationStr);
+        saveLoading.style.display = 'none';
+        saveSuccess.style.display = 'block';
+    } catch (e) {
+        saveLoading.style.display = 'none';
+        saveError.style.display = 'block';
+        document.getElementById('saveErrorMessage').innerText = "Gagal menyimpan: " + e.message;
+    }
+
   } catch (err) {
     console.error(err);
+    resetToInput();
     alert('Gagal menganalisis audio: ' + err.message);
   }
 }
@@ -824,7 +1003,16 @@ function fillResult(prefix, result) {
     const barDiv = document.getElementById(prefix + em.toLowerCase() + "Bar");
 
     if (barVal) barVal.innerText = val.toFixed(2) + '%';
-    if (barDiv) barDiv.style.width = val + '%';
+    if (barDiv) {
+      barDiv.style.width = val + '%';
+      if(val <= 0) {
+          barDiv.style.backgroundColor = 'transparent';
+          barDiv.style.boxShadow = 'none';
+      } else {
+          barDiv.style.backgroundColor = ''; // Reset
+          barDiv.style.boxShadow = ''; 
+      }
+    }
 
     if (val > maxEmotionVal) {
       maxEmotionVal = val;
@@ -857,24 +1045,14 @@ function fillResult(prefix, result) {
 
   const sukuKeys = Object.keys(sukuDist);
   const barChart = document.getElementById(prefix + 'sukuBars');
-
-  // Bersihkan chart lama jika perlu, atau pastikan ID unik
-  // Di sini asumsi elemen bar-chart kosong atau bisa di-append
-  // Tapi struktur HTML statik tidak punya child dinamis untuk suku.
-  // Kita harus generate bar secara dinamis atau asumsikan struktur sudah ada?
-  // Kode asli TIDAK punya loop generate HTML untuk suku di bagian HTML,
-  // tapi di JS ada `sukuKeys.forEach`.
-  // Namun, kode JS di Step 8 tidak menunjukkan innerHTML injection untuk Suku.
-  // Wait, line 94 di Step 8: <div class="bar-chart" id="u_sukuBars"></div>
-  // This implies JS should inject content.
-  // Let me check the original JS for filling suku result.
-  // Line 798 in Step 8: `let barEl = document.getElementById(prefix + 'sukuBar_' + suku);`
-  // It tries to find existing element, if not creates it.
-  // OK, I'll allow the original logic to run.
-
-  // NOTE: I am copying the logic from Step 8 roughly but I must ensure the fillResult function is complete.
-  // The snippet in Step 8 was cutoff at line 800.
-  // I will reconstruct the loop based on standard chart logic or what I can infer.
+  // Suku Color Map
+  const sukuColorMap = {
+    "Jawa": "#8B5A2B",
+    "Sunda": "#2E8B57",
+    "Batak": "#1C1C1C",
+    "Minang": "#FFD700",
+    "Betawi": "#c10303ff"
+  };
 
   if(barChart) {
       barChart.innerHTML = ''; // reset
@@ -888,107 +1066,68 @@ function fillResult(prefix, result) {
         // Create label
         const label = document.createElement('div');
         label.className = 'bar-label';
-        label.innerHTML = `${suku} <span>${val.toFixed(2)}%</span>`;
+        // Add spacing explicitly just in case
+        label.innerHTML = `${suku} &nbsp; <span>${val.toFixed(2)}%</span>`;
         barChart.appendChild(label);
 
-        // Create bar
-        const barOuter = document.createElement('div');
-        barOuter.className = 'bar'; // default gray/base
-        // Kita bisa kasih warna khusus jika mau, atau biarkan default CSS.
-        // Asumsi ada CSS .bar
-        const barInner = document.createElement('div');
-        barInner.style.height = '100%'; 
-        barInner.style.width = val + '%';
-        barInner.style.backgroundColor = '#4ade80'; // Greenish
-        barOuter.appendChild(barInner);
-        
-        // Namun struktur HTML asli untuk emotion adalah: <div class="bar [emotion]" style="width:.."></div>
-        // Suku mungkin butuh struktur serupa.
-        // Simple structure:
+        // Create Single Bar (No Wrapper)
         const barDiv = document.createElement('div');
-        barDiv.className = 'bar';
+        barDiv.className = 'bar'; 
+        // Apply class for CSS lookup if needed, though we use inline color
+        barDiv.classList.add(suku.toLowerCase().replace(/\s+/g, '-'));
+
         barDiv.style.width = val + '%';
-        barDiv.style.backgroundColor = '#60a5fa'; // Blueish
+        
+        // Determine Color
+        const color = sukuColorMap[suku] || '#94a3b8';
+
+        if (val <= 0) {
+            barDiv.style.backgroundColor = 'transparent';
+            barDiv.style.boxShadow = 'none';
+        } else {
+            barDiv.style.backgroundColor = color;
+        }
+        
         barChart.appendChild(barDiv);
       });
   }
   
-  document.getElementById(prefix + 'sukuEmojiIcon').src = sukuEmojiIcon[dominantSuku]; 
+  if(dominantSuku !== "-") {
+      document.getElementById(prefix + 'sukuEmojiIcon').src = sukuEmojiIcon[dominantSuku] || "./img/neutral.png"; 
+  }
   document.getElementById(prefix + 'sukuDominant').innerText = dominantSuku;
   document.getElementById(prefix + 'sukuDominantPercent').innerText = maxSukuVal.toFixed(2) + '%';
 }
 
-function generatePDF() {
-    if(!lastUploadResult) return alert("Belum ada hasil analisis untuk disimpan!");
-    createPDF('Upload', lastUploadResult);
-}
-function generatePDFRecord() {
-    if(!lastRecordResult) return alert("Belum ada hasil analisis untuk disimpan!");
-    createPDF('Rekaman', lastRecordResult);
-}
+function previewResult() {
+    if(!currentResult) {
+        alert("Belum ada hasil analisis.");
+        return;
+    }
 
-function createPDF(sourceLabel, resultData) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // -- HEADER / TITLE --
-    doc.setFontSize(16);
-    doc.setFont("helvetica", "bold");
-    doc.text("Hasil Identifikasi Suara", 105, 15, { align: "center" });
-
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Sumber: ${sourceLabel}`, 105, 22, { align: "center" });
-    doc.text(`Tanggal: ${new Date().toLocaleString()}`, 105, 27, { align: "center" });
-
-    // -- USER INFO --
-    const startY = 35;
-    doc.setFontSize(11);
-    doc.text(`Username : {{ session('username') }}`, 14, startY);
-    doc.text(`Email    : {{ session('email') }}`, 14, startY + 6);
-    doc.text(`Gender   : {{ session('gender') }}`, 14, startY + 12);
-    doc.text(`Usia     : {{ session('usia') }}`, 14, startY + 18);
-
-    // -- PREPARE TABLE DATA --
-    // 1. Emotion Data
-    const emoDist = resultData.distribution_by_emotion || {};
-    const emoRows = Object.keys(emoDist).map(key => {
-        return [key, parseFloat(emoDist[key].percent).toFixed(2) + " %"];
-    }).sort((a,b) => parseFloat(b[1]) - parseFloat(a[1])); // Sort Descending
-
-    // 2. Suku Data
-    const sukuDist = resultData.distribution_by_suku || {};
-    const sukuRows = Object.keys(sukuDist).map(key => {
-        return [key, parseFloat(sukuDist[key].percent).toFixed(2) + " %"];
-    }).sort((a,b) => parseFloat(b[1]) - parseFloat(a[1]));
-
-    // -- DRAW TABLES --
+    // Populate Form
+    document.getElementById('prev_sumber').value = currentSource;
+    document.getElementById('prev_hasil').value = currentResult.dominant_emotion || currentResult.mainEmotion || "-";
+    document.getElementById('prev_akurasi').value = currentResult.accuracy ?? 0;
     
-    // Table 1: Emosi
-    doc.text("Tabel Hasil Identifikasi Emosi", 14, startY + 30);
-    doc.autoTable({
-        startY: startY + 35,
-        head: [['Emosi', 'Persentase (%)']],
-        body: emoRows,
-        theme: 'grid',
-        headStyles: { fillColor: [59, 130, 246] }, // Blueish
-    });
+    // JSON encode arrays
+    document.getElementById('prev_dist_emotion').value = JSON.stringify(currentResult.distribution_by_emotion || {});
+    document.getElementById('prev_dist_suku').value = JSON.stringify(currentResult.distribution_by_suku || {});
 
-    // Table 2: Suku (below previous table)
-    let finalY = doc.lastAutoTable.finalY + 15;
-    doc.text("Tabel Hasil Identifikasi Suku", 14, finalY);
-    doc.autoTable({
-        startY: finalY + 5,
-        head: [['Suku', 'Persentase (%)']],
-        body: sukuRows,
-        theme: 'grid',
-        headStyles: { fillColor: [59, 130, 246] },
-    });
+    // Duration & File Name
+    if(currentSource === 'upload') {
+        const fileInput = document.getElementById('fileInput');
+        if(fileInput.files[0]) document.getElementById('prev_file_suara').value = fileInput.files[0].name;
+        if(wsUpload) document.getElementById('prev_durasi').value = formatTime(wsUpload.getDuration());
+    } else {
+        document.getElementById('prev_file_suara').value = "rekaman.wav";
+        if(wsRecord) document.getElementById('prev_durasi').value = formatTime(wsRecord.getDuration());
+    }
 
-    // Save
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    doc.save(`hasil_identifikasi_${timestamp}.pdf`);
+    document.getElementById('previewForm').submit();
 }
+
+
 </script>
 </body>
 </html>

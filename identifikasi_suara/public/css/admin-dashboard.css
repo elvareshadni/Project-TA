@@ -94,6 +94,10 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    /* Prevent flex item from expanding */
+    overflow-x: hidden;
+    /* Prevent page scroll */
 }
 
 /* Topbar */
@@ -107,9 +111,7 @@ body {
     color: #ffffff;
 }
 
-.topbar-spacer {
-    /* biar kiri kosong, logo sudah di sidebar */
-}
+
 
 .topbar-user {
     display: flex;
@@ -169,4 +171,54 @@ body {
     color: #9ca3af;
     text-align: center;
     background-color: transparent;
+}
+
+/* ================= RESPONSIVE SIDEBAR ================= */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    /* Below sidebar, above everything else */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        /* Hide off-screen */
+        height: 100vh;
+        z-index: 999;
+        transition: left 0.3s ease-in-out;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        width: 250px;
+        /* Slightly wider on mobile for touch */
+    }
+
+    .admin-sidebar.show {
+        left: 0;
+    }
+
+    /* Adjust Topbar to allow button */
+    .admin-topbar {
+        justify-content: flex-start;
+        /* Align start to put button left */
+    }
+
+    .topbar-spacer {
+        flex-grow: 1;
+        /* Push user info to right */
+    }
 }
