@@ -22,11 +22,12 @@ origins = [
     "http://127.0.0.1",
     "http://localhost",
     "http://localhost:5173",
+    "https://www.suaraku.fun"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -291,4 +292,4 @@ async def predict_legacy(file: UploadFile = File(...)):
 # MAIN
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("app:app", host="127.0.0.1", port=5000, reload=True)
+    uvicorn.run("app:app", host="127.0.0.1", port=8002, reload=True)
