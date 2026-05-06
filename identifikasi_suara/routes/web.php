@@ -28,6 +28,7 @@ Route::post('/save-user', function (Request $request) {
     $validated = $request->validate([
         'nama'   => 'required|string|max:100',
         'email'  => 'required|email',
+        'no_hp'  => 'required|string|max:20',
         'gender' => 'required|string',
         'usia'   => 'required|numeric',
     ]);
@@ -35,6 +36,7 @@ Route::post('/save-user', function (Request $request) {
     session([
         'username' => $validated['nama'],
         'email'    => $validated['email'],
+        'no_hp'    => $validated['no_hp'],
         'gender'   => $validated['gender'],
         'usia'     => $validated['usia'],
     ]);

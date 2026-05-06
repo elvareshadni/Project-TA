@@ -1,22 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hasil Identifikasi Suara</title>
     <style>
-        body { font-family: sans-serif; color: #333; }
+        body { font-family: sans-serif; background-color: #f4f6fc; margin: 0; padding: 20px; color: #333; }
+        .container {
+            max-width: 210mm; /* A4 width */
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
         .header { background: #0053d6; color: white; padding: 20px; text-align: center; }
         .content { padding: 20px; }
         .result-box { margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { max-width: 100%; border-radius: 8px; }
+            .header { padding: 15px; }
+            .header h2 { font-size: 20px; margin: 0; }
+            .content { padding: 15px; }
+            .result-box { padding: 15px; }
+            th, td { padding: 6px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Hasil Identifikasi Digital SUARAKU</h2>
-    </div>
-    <div class="content">
+    <div class="container">
+        <div class="header">
+            <h2>Hasil Identifikasi Digital SUARAKU</h2>
+        </div>
+        <div class="content">
         <p>Halo, <strong>{{ $data['nama'] }}</strong>!</p>
         <p>Terima kasih telah menggunakan layanan SUARAKU. Berikut adalah hasil analisis suara Anda:</p>
 
@@ -85,6 +105,7 @@
 
         <p>Terima kasih,</p>
         <p>Tim SUARAKU</p>
+    </div>
     </div>
 </body>
 </html>

@@ -47,16 +47,18 @@
   {{-- ================== 1. INPUT SECTION ================== --}}
   <div id="inputSection">
   <div class="toggle-container">
-      <button class="toggle-btn" id="btnRecord" onclick="switchTab('record')">Rekam Langsung</button>
-      <button class="toggle-btn active" id="btnUpload" onclick="switchTab('upload')">Unggah File Audio</button>
+      <button class="toggle-btn active" id="btnRecord" onclick="switchTab('record')">Rekam Langsung</button>
+      <button class="toggle-btn" id="btnUpload" onclick="switchTab('upload')">Unggah File Audio</button>
   </div>
 
   {{-- ================== UPLOAD CONTAINER ================== --}}
-  <div id="uploadContainerWrapper">
+  <div id="uploadContainerWrapper" class="hidden-tab">
       <div class="upload-container">
         <h3 class="upload-title">Mengidentifikasi suara melalui file audio (.wav)</h3>
         <p class="upload-description">
-          Kami menggunakan layanan Speech Emotion Recognition (SER) untuk membantu Anda mengidentifikasi emosi dalam suara. Unggah file audio (.wav) untuk mengenali emosi dalam suaramu.
+          Kami menggunakan layanan Speech Emotion Recognition (SER) untuk membantu Anda mengidentifikasi emosi dalam suara. Unggah file audio (.wav) untuk mengenali emosi dalam suaramu. <br>
+          <strong>Kelas Emosi:</strong> Happy, Sad, Angry, Surprised, Neutral &nbsp;&nbsp;|&nbsp;&nbsp;
+          <strong>Kelas Suku:</strong> Jawa, Sunda, Batak, Minang, Betawi
         </p>
         <input type="file" id="fileInput" accept=".wav" style="display: none;" onchange="handleFileSelect(event)">
         <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
@@ -96,12 +98,14 @@
   </div>
 
   {{-- ================== RECORD CONTAINER ================== --}}
-  <div id="recordContainerWrapper" class="hidden-tab">
+  <div id="recordContainerWrapper">
       <div class="recording-container">
         <h3 class="recording-title">Mengidentifikasi suara melalui rekaman langsung</h3>
         <p class="recording-description">
           Kenali emosi dalam rekaman suara Anda secara langsung menggunakan teknologi Speech Emotion Recognition (SER).
-          Cukup rekam atau ucapkan suara Anda untuk mendeteksi emosi dan suku secara real-time.
+          Cukup rekam atau ucapkan suara Anda untuk mendeteksi emosi dan suku secara real-time. <br>
+          <strong>Kelas Emosi:</strong> Happy, Sad, Angry, Surprised, Neutral &nbsp;&nbsp;|&nbsp;&nbsp;
+          <strong>Kelas Suku:</strong> Jawa, Sunda, Batak, Minang, Betawi
         </p>
         <!-- Initial Prompt State -->
         <div id="recordingStartPrompt">
@@ -298,7 +302,7 @@
 </section>
 
 <script>
-const API_BASE = "http://127.0.0.1:5000";
+const API_BASE = "http://127.0.0.1:8002";
 const MAX_RECORD_SECONDS = {{ $maxSeconds ?? 300 }}; // 5 minutes default
 const MIN_RECORD_SECONDS = {{ $minSeconds ?? 180 }};
 const MAX_RECORD_STR = formatTime(MAX_RECORD_SECONDS);
@@ -840,7 +844,12 @@ async function analyzeRecording() {
     } catch (err) {
         console.error(err);
         resetToInput();
-        alert('Gagal menganalisis rekaman: ' + err.message);
+        Swal.fire({
+            icon: 'error',
+            title: 'Koneksi Gagal',
+            text: 'Sistem tidak dapat terhubung ke server deteksi (AI).',
+            confirmButtonColor: '#0053d6'
+        });
     }
 }
 
@@ -888,10 +897,38 @@ async function handleFileSelect(e) {
     const file = e.target.files[0];
     if (!file) return;
 
-    const maxSize = 500 * 1024 * 1024;
+    const minSize = 100 * 1024; // 100 KB
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+
+    if (file.type !== "audio/wav" && !file.name.toLowerCase().endsWith(".wav")) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Format Tidak Sesuai',
+            text: 'Sistem hanya menerima file audio dengan format .wav',
+            confirmButtonColor: '#0053d6'
+        });
+        e.target.value = "";
+        return;
+    }
+
+    if (file.size < minSize) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Ukuran Terlalu Kecil',
+            text: 'Ukuran file minimal adalah 100 KB.',
+            confirmButtonColor: '#0053d6'
+        });
+        e.target.value = "";
+        return;
+    }
 
     if (file.size > maxSize) {
-        alert("Ukuran file terlalu besar! Maksimal 500MB.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Ukuran Terlalu Besar',
+            text: 'Ukuran file maksimal adalah 10 MB.',
+            confirmButtonColor: '#0053d6'
+        });
         e.target.value = "";
         return;
     }
@@ -984,7 +1021,12 @@ async function analyzeAudio() {
   } catch (err) {
     console.error(err);
     resetToInput();
-    alert('Gagal menganalisis audio: ' + err.message);
+    Swal.fire({
+        icon: 'error',
+        title: 'Koneksi Gagal',
+        text: 'Sistem tidak dapat terhubung ke server deteksi (AI).',
+        confirmButtonColor: '#0053d6'
+    });
   }
 }
 

@@ -5,18 +5,22 @@
     <div class="form-section">
         <h3 class="text-center mb-4 fw-bold text-primary">Informasi Pribadi</h3>
         <form id="userForm">
-            <div class="mb-3">
+            <div class="mb-2">
                 <input type="text" class="form-control" id="nama" placeholder="Masukkan nama" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-22">
                 <input type="email" class="form-control" id="email" placeholder="Masukkan email" required>
                 <small style="font-style: italic; color: #6c757d;">
                     *Pastikan email yang Anda masukkan aktif.
                 </small>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-2">
+                <input type="tel" class="form-control" id="no_hp" placeholder="Masukkan No. HP" required>
+            </div>
+
+            <div class="mb-2">
                 <label class="form-label">Jenis Kelamin </label><br>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gender" id="male" value="Laki-laki" checked>
@@ -28,11 +32,11 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-2">
                 <label class="form-label">Usia (Tahun) *</label>
                 <select class="form-select" id="usia" required>
                     <option value="">Pilih Usia</option>
-                    @for ($i = 10; $i <= 30; $i++)
+                    @for ($i = 0; $i <= 99; $i++)
                         <option value="{{ $i }}">{{ $i }}</option>
                     @endfor
                 </select>
@@ -126,6 +130,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
     const data = {
         nama: document.getElementById('nama').value,
         email: document.getElementById('email').value,
+        no_hp: document.getElementById('no_hp').value,
         gender: document.querySelector('input[name="gender"]:checked').value,
         usia: document.getElementById('usia').value,
     };
