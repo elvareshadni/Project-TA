@@ -2,125 +2,135 @@
 
 @section('content')
 <div class="login-container">
+    
+    <!-- Left Column: Form Section -->
     <div class="form-section">
-        <h3 class="text-center mb-4 fw-bold text-primary">Informasi Pribadi</h3>
+        <h2 class="fw-extrabold mb-1" style="font-family: 'Outfit', sans-serif; font-size: 26px; color: var(--text-dark); letter-spacing: 0.5px;">Informasi Pribadi</h2>
+        <p class="text-muted mb-2" style="font-size: 13.5px; font-weight: 400;">Lengkapi data dirimu dibawah ini</p>
+        
         <form id="userForm">
-            <div class="mb-2">
+            <!-- Nama Lengkap -->
+            <div class="mb-1">
+                <label class="form-label" for="nama">Nama Lengkap</label>
                 <input type="text" class="form-control" id="nama" placeholder="Masukkan nama" required>
             </div>
 
-            <div class="mb-22">
+            <!-- Email -->
+            <div class="mb-1">
+                <label class="form-label" for="email">Email</label>
                 <input type="email" class="form-control" id="email" placeholder="Masukkan email" required>
-                <small style="font-style: italic; color: #6c757d;">
+                <div class="mt-1" style="font-size: 11px; font-style: italic; color: #64748b;">
                     *Pastikan email yang Anda masukkan aktif.
-                </small>
+                </div>
             </div>
 
-            <div class="mb-2">
+            <!-- No HP -->
+            <div class="mb-1">
+                <label class="form-label" for="no_hp">No. HP</label>
                 <input type="tel" class="form-control" id="no_hp" placeholder="Masukkan No. HP" required>
             </div>
 
-            <div class="mb-2">
-                <label class="form-label">Jenis Kelamin </label><br>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="male" value="Laki-laki" checked>
-                    <label class="form-check-label" for="male">Laki-laki</label>
+            <!-- Gender & Usia Row -->
+            <div class="row gy-3 gx-2 mb-4 align-items-end">
+                <div class="col-12 col-md-7">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <div class="d-flex gap-3 align-items-center mt-2">
+                        <div class="form-check form-check-inline m-0">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="Laki-laki" checked>
+                            <label class="form-check-label" for="male">Laki-laki</label>
+                        </div>
+                        <div class="form-check form-check-inline m-0">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="Perempuan">
+                            <label class="form-check-label" for="female">Perempuan</label>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="female" value="Perempuan">
-                    <label class="form-check-label" for="female">Perempuan</label>
+                <div class="col-12 col-md-5">
+                    <label class="form-label" for="usia">Usia (Tahun)*</label>
+                    <select class="form-select" id="usia" required>
+                        <option value="">Pilih Usia</option>
+                        @for ($i = 1; $i <= 99; $i++)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
+                    </select>
                 </div>
             </div>
 
-            <div class="mb-2">
-                <label class="form-label">Usia (Tahun) *</label>
-                <select class="form-select" id="usia" required>
-                    <option value="">Pilih Usia</option>
-                    @for ($i = 0; $i <= 99; $i++)
-                        <option value="{{ $i }}">{{ $i }}</option>
-                    @endfor
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 mt-3">Simpan</button>
-            <a href="/login" class="btn btn-outline-primary w-100 mt-3">Login sebagai Admin</a>
+            <!-- Action Buttons -->
+            <button type="submit" class="btn btn-primary w-100 mb-2">Simpan</button>
+            <a href="/login" class="btn btn-outline-primary w-100">Login sebagai Admin</a>
         </form>
     </div>
 
-    <!-- Bagian Sambutan -->
-<div class="info-section text-white d-none d-md-flex flex-column justify-content-center align-items-center" 
-     style="padding-top: 200px; height: auto;">
+    <!-- Right Column: Info Section -->
+<div class="info-section text-center">
 
-    <!-- Animasi Audio di Atas -->
-    <div class="audio-wave mb-4">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+    <!-- Logo -->
+    <div class="d-flex flex-column align-items-center mb-2">
+        <img src="{{ asset('img/logo-suarakuu.png') }}"
+             alt="Logo Suaraku"
+             style="width:200px; height:auto;">
+
+        <span class="badge rounded-pill border border-white border-opacity-25 px-3 py-1 mt-2"
+              style="font-size:10px; font-weight:500; background-color:rgba(255,255,255,.08); letter-spacing:.5px;">
+            Speech Emotion Recognition
+        </span>
     </div>
 
-    <!-- Teks Sambutan di Bawah -->
-    <h2 class="fw-bold mb-3">Halo, Sobat!</h2>
-    <p class="text-center mb-4">
-        Selamat datang di aplikasi <b>Suaraku</b>.<br>
-        Silakan isi data pribadimu untuk melanjutkan.
-    </p>
+    <!-- Greeting -->
+    <div class="d-flex flex-column align-items-center">
+        <h3 class="fw-extrabold text-white mb-2"
+            style="font-family:'Outfit',sans-serif; font-size:24px;">
+            Halo, Sobat!
+        </h3>
 
-    <div class="mb-4 text-center">
-        <a href="{{ route('tentang-kami') }}" class="btn btn-sm btn-outline-light rounded-pill px-4">
-            <i class="fa-solid fa-circle-info me-1"></i> Tentang Kami
-        </a>
+        <p class="text-white px-2 mb-3"
+           style="font-size:13px; line-height:1.5;">
+            Selamat datang di aplikasi <b>Suaraku</b>.
+            Silakan isi data pribadimu untuk melanjutkan.
+        </p>
+
+            <!-- Features details block -->
+            <div class="d-flex flex-column gap-3 w-100 text-start px-3 mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle text-white" style="width: 38px; height: 38px; background-color: rgba(255, 255, 255, 0.12); flex-shrink: 0;">
+                        <i class="fa-regular fa-face-smile fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-white fw-bold" style="font-size: 13.5px;">Deteksi Emosi</h6>
+                        <p class="mb-0 text-white-50" style="font-size: 11.5px;">Analisis emosi dari suaramu</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle text-white" style="width: 38px; height: 38px; background-color: rgba(255, 255, 255, 0.12); flex-shrink: 0;">
+                        <i class="fa-solid fa-user-tag fs-5"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-white fw-bold" style="font-size: 13.5px;">Identifikasi Suku</h6>
+                        <p class="mb-0 text-white-50" style="font-size: 11.5px;">Kenali asal suku dari dialek suaramu</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual equalizer animation -->
+            <div class="audio-wave mb-3">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- About Button at bottom -->
+        <div>
+            <a href="{{ route('tentang-kami') }}" class="btn btn-sm btn-outline-light rounded-pill px-4" style="border-color: rgba(255, 255, 255, 0.35); font-size: 12px; font-weight: 600; padding: 7px 20px;">
+                Tentang Kami
+            </a>
+        </div>
+
     </div>
-</div>
-
-<!-- CSS Animasi -->
-<style>
-.audio-wave {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 40px;
-    gap: 5px;
-}
-
-.audio-wave span {
-    display: block;
-    width: 6px;
-    height: 10px;
-    background: white;
-    border-radius: 5px;
-    animation: wave 1.2s infinite ease-in-out;
-}
-
-.audio-wave span:nth-child(1) { animation-delay: 0s; }
-.audio-wave span:nth-child(2) { animation-delay: 0.1s; }
-.audio-wave span:nth-child(3) { animation-delay: 0.2s; }
-.audio-wave span:nth-child(4) { animation-delay: 0.3s; }
-.audio-wave span:nth-child(5) { animation-delay: 0.4s; }
-.audio-wave span:nth-child(6) { animation-delay: 0.5s; }
-.audio-wave span:nth-child(7) { animation-delay: 0.6s; }
-.audio-wave span:nth-child(8) { animation-delay: 0.7s; }
-.audio-wave span:nth-child(9) { animation-delay: 0.8s; }
-.audio-wave span:nth-child(10) { animation-delay: 0.9s; }
-
-@keyframes wave {
-    0%, 100% {
-        height: 10px;
-        opacity: 0.5;
-    }
-    50% {
-        height: 35px;
-        opacity: 1;
-    }
-}
-</style>
-
-
 </div>
 
 <script>
@@ -151,7 +161,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
                 text: 'Halo, ' + data.nama + '! Data Anda berhasil disimpan.',
                 icon: 'success',
                 confirmButtonText: 'Lanjut',
-                confirmButtonColor: '#0053d6',
+                confirmButtonColor: '#0c56d0',
                 allowOutsideClick: false
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -163,7 +173,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
                 title: 'Gagal!',
                 text: 'Terjadi kesalahan, coba lagi.',
                 icon: 'error',
-                confirmButtonColor: '#0053d6'
+                confirmButtonColor: '#0c56d0'
             });
         }
     })
@@ -173,7 +183,7 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
             title: 'Error!',
             text: 'Terjadi kesalahan sistem.',
             icon: 'error',
-            confirmButtonColor: '#0053d6'
+            confirmButtonColor: '#0c56d0'
         });
     });
 });

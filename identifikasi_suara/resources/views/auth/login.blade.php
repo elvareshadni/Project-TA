@@ -2,18 +2,22 @@
 
 @section('content')
 <div class="login-container">
+    
+    <!-- Left Column: Form Section -->
     <div class="form-section">
-        <h2 class="text-center mb-1 fw-bold text-primary">Admin Login</h2>
-        <p class="text-center mb-4">Masuk ke dashboard admin</p>
+        <h2 class="fw-extrabold mb-1" style="font-family: 'Outfit', sans-serif; font-size: 26px; color: var(--text-dark); letter-spacing: -0.5px;">Admin Login</h2>
+        <p class="text-muted mb-4" style="font-size: 13.5px; font-weight: 400;">Masuk ke dashboard admin</p>
 
         @if (session('status'))
-            <p id="errorMsg" style="display:block;color:#16a34a" class="mb-3">
+            <p id="successMsg" style="display:block; color: #16a34a; font-size: 13px; font-weight: 500;" class="mb-3">
+                {{ session('status') }}
             </p>
         @endif
 
         <form method="POST" action="{{ route('auth.login.submit') }}">
             @csrf
 
+            <!-- Email / Username input -->
             <div class="mb-3">
                 <input
                     type="text"
@@ -27,12 +31,13 @@
                     autofocus
                 />
                 @error('email')
-                    <div class="field-error" style="color:#ff4d4f;margin-top:5px">
+                    <div class="field-error" style="color: #ff4d4f; font-size: 12px; margin-top: 5px; font-weight: 500;">
+                        {{ $message }}
                     </div>
                 @enderror
             </div>
 
-            {{-- Password --}}
+            <!-- Password input -->
             <div class="mb-4">
                 <input
                     type="password"
@@ -44,86 +49,49 @@
                     autocomplete="current-password"
                 />
                 @error('password')
-                    <div class="field-error" style="color:#ff4d4f;margin-top:5px">
+                    <div class="field-error" style="color: #ff4d4f; font-size: 12px; margin-top: 5px; font-weight: 500;">
                         {{ $message }}
                     </div>
                 @enderror
             </div>
 
-            {{-- Error login umum (misalnya kredensial salah) --}}
+            <!-- General Validation Error Display -->
             @if ($errors->has('email') && !$errors->has('password'))
-                <p id="errorMsg" style="display:block;color:#ff4d4f" class="mb-3">
+                <p id="errorMsg" style="display:block; color: #ff4d4f; font-size: 13px; font-weight: 500;" class="mb-3">
                     {{ $errors->first('email') }}
                 </p>
             @endif
 
-            {{-- Tombol Login --}}
-            <button type="submit" class="btn-primary w-100 mb-3">Masuk</button>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100">Masuk</button>
         </form>
     </div>
 
-    {{-- Panel kanan (animasi + sambutan) --}}
-    <div class="info-section text-white d-flex flex-column justify-content-center align-items-center">
-        <div class="audio-wave mb-4">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+    <!-- Right Column: Info Section -->
+    <div class="info-section text-center">
+        
+        <!-- Logo and Pill subtext -->
+        <div class="d-flex flex-column align-items-center">
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="bg-white rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                    <img src="{{ asset('img/logo-suarakuu.png') }}" alt="Logo Suaraku" class="logo-img">
+                </div>
+                <span class="fs-4 fw-extrabold text-white" style="font-family: 'Outfit', sans-serif; font-weight: 800; letter-spacing: -0.5px;">SUARAKU</span>
+            </div>
+            <span class="badge rounded-pill border border-white border-opacity-25 px-3 py-1.5" style="font-size: 10px; font-weight: 500; background-color: rgba(255, 255, 255, 0.08); letter-spacing: 0.5px;">Speech Emotion Recognition</span>
         </div>
 
-        <h2 class="fw-bold mb-3">Halo, Sobat!</h2>
-        <p class="text-center mb-0">
-            Selamat datang di aplikasi <b>Suara Ku</b>.<br>
-            Silakan isi data pribadimu untuk melanjutkan.
-        </p>
+        <!-- Greeting content -->
+        <div class="my-auto d-flex flex-column align-items-center justify-content-center">
+            <h3 class="fw-extrabold text-white mb-2" style="font-family: 'Outfit', sans-serif; font-size: 24px;">Halo, Sobat!</h3>
+            <p class="text-white-50 px-2 mb-0" style="font-size: 13px; line-height: 1.6;">
+                Selamat datang di aplikasi <b>Suara Ku</b>. Silakan isi data pribadimu untuk melanjutkan.
+            </p>
+        </div>
+
+        <!-- Empty spacing buffer matching layout alignment of landing page -->
+        <div style="height: 38px;"></div>
+
     </div>
 </div>
-
-{{-- CSS Animasi --}}
-<style>
-.audio-wave {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 40px;
-    gap: 5px;
-}
-
-.audio-wave span {
-    display: block;
-    width: 6px;
-    height: 10px;
-    background: #ffffff;
-    border-radius: 5px;
-    animation: wave 1.2s infinite ease-in-out;
-}
-
-.audio-wave span:nth-child(1) { animation-delay: 0s; }
-.audio-wave span:nth-child(2) { animation-delay: 0.1s; }
-.audio-wave span:nth-child(3) { animation-delay: 0.2s; }
-.audio-wave span:nth-child(4) { animation-delay: 0.3s; }
-.audio-wave span:nth-child(5) { animation-delay: 0.4s; }
-.audio-wave span:nth-child(6) { animation-delay: 0.5s; }
-.audio-wave span:nth-child(7) { animation-delay: 0.6s; }
-.audio-wave span:nth-child(8) { animation-delay: 0.7s; }
-.audio-wave span:nth-child(9) { animation-delay: 0.8s; }
-.audio-wave span:nth-child(10) { animation-delay: 0.9s; }
-
-@keyframes wave {
-    0%, 100% {
-        height: 10px;
-        opacity: 0.5;
-    }
-    50% {
-        height: 35px;
-        opacity: 1;
-    }
-}
-</style>
 @endsection
