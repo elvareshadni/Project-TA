@@ -28,10 +28,9 @@
 <header>
     <div class="logo">
         <a href="{{ route('home.dashboard') }}" style="display: flex; align-items: center; text-decoration: none; gap: 10px;">
-            <div style="background: white; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
-                <img src="{{ asset('img/logo-suarakuu.png') }}" alt="Logo Suaraku" style="width: 22px; height: 22px; object-fit: contain;">
-            </div>
-            <span style="color: white; font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; vertical-align: middle;">SUARAKU</span>
+            <img src="{{ asset('img/logo-suarakuu.png') }}"
+             alt="Logo Suaraku"
+             style="width:125px; height:auto;">
         </a>
     </div>
     <nav style="display: flex; align-items: center; ">
