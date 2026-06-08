@@ -20,14 +20,21 @@ class HomeController extends Controller
         $username = session('username', 'Pengguna');
 
         $setting = SettingWaktu::first();
-        $maxSeconds = 5 * 60; // Default max 5 menit
-        $minSeconds = 3 * 60; // Default min 3 menit
+        $maxSeconds = 300; // Default max 300 detik (5 menit)
+        $minSeconds = 180; // Default min 180 detik (3 menit)
 
         if ($setting && $setting->durasi) {
             $parts = explode('-', $setting->durasi);
             if (count($parts) == 2) {
-                $minSeconds = (int)$parts[0] * 60;
-                $maxSeconds = (int)$parts[1] * 60;
+                $minVal = (int)$parts[0];
+                $maxVal = (int)$parts[1];
+                if ($maxVal < 60) {
+                    $minSeconds = $minVal * 60;
+                    $maxSeconds = $maxVal * 60;
+                } else {
+                    $minSeconds = $minVal;
+                    $maxSeconds = $maxVal;
+                }
             }
         }
 

@@ -85,7 +85,10 @@
                 <div class="timer-text" id="recordTimer" style="display: none;">00:00 / 05:00</div>
                 
                 <!-- Help/Warning Text -->
-                <div class="mic-help-text" id="newMicHelpText">Jarak mulut &plusmn; 10 cm dari mikrofon</div>
+                <div class="mic-help-text" id="newMicHelpText">
+                    Jarak mulut &plusmn; 10 cm dari mikrofon <br>
+                    <span style="display: inline-block; margin-top: 5px; font-weight: bold;">Durasi minimal perekaman {{ $minSeconds }} detik</span>
+                </div>
             </div>
 
         </div>
@@ -453,11 +456,10 @@ async function toggleRecording(forceStop = false) {
         const duration = Math.floor((Date.now() - recordingStartTime - pausedTime) / 1000);
 
         if (!forceStop && duration < MIN_RECORD_SECONDS) {
-            const minMins = Math.floor(MIN_RECORD_SECONDS / 60);
             Swal.fire({
                 icon: 'warning',
                 title: 'Durasi Kurang',
-                text: `Durasi minimal adalah ${minMins} menit.`,
+                text: `Durasi minimal adalah ${MIN_RECORD_SECONDS} detik.`,
             });
             return;
         }

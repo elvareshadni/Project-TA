@@ -14,8 +14,27 @@
         @endif
 
         <p class="mb-3">
-            Atur durasi waktu yang digunakan dalam proses identifikasi suara.
+            Atur durasi waktu (dalam detik) yang digunakan dalam proses identifikasi suara.
         </p>
+
+        @php
+            $min = 180;
+            $max = 300;
+            if (isset($setting) && $setting->durasi) {
+                $parts = explode('-', $setting->durasi);
+                if (count($parts) == 2) {
+                    $minVal = (int)$parts[0];
+                    $maxVal = (int)$parts[1];
+                    if ($maxVal < 60) {
+                        $min = $minVal * 60;
+                        $max = $maxVal * 60;
+                    } else {
+                        $min = $minVal;
+                        $max = $maxVal;
+                    }
+                }
+            }
+        @endphp
 
         <form action="{{ route('admin.setting-waktu.update') }}" method="POST">
             @csrf
@@ -30,9 +49,10 @@
                                name="durasi_min"
                                class="form-control"
                                min="1"
-                               placeholder="contoh:3"
+                               placeholder="contoh: 180"
+                               value="{{ $min }}"
                                required>
-                        <span class="input-group-text">menit</span>
+                        <span class="input-group-text">detik</span>
                     </div>
                 </div>
 
@@ -49,9 +69,10 @@
                                name="durasi_max"
                                class="form-control"
                                min="1"
-                               placeholder="contoh: 8"
+                               placeholder="contoh: 300"
+                               value="{{ $max }}"
                                required>
-                        <span class="input-group-text">menit</span>
+                        <span class="input-group-text">detik</span>
                     </div>
                 </div>
 
