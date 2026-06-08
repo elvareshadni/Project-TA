@@ -14,7 +14,7 @@
             </p>
         @endif
 
-        <form method="POST" action="{{ route('auth.login.submit') }}">
+        <form method="POST" action="{{ route('auth.login.submit') }}" id="loginForm">
             @csrf
 
             <!-- Email / Username input -->
@@ -63,7 +63,8 @@
             @endif
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100">Masuk</button>
+            <button type="submit" class="btn btn-primary w-100 mb-2" id="btnMasuk">Masuk</button>
+            <a href="{{ route('informasi') }}" class="btn btn-outline-primary w-100">Kembali</a>
         </form>
     </div>
 
@@ -94,4 +95,21 @@
 
     </div>
 </div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    const btnMasuk = document.getElementById('btnMasuk');
+    btnMasuk.disabled = true;
+    btnMasuk.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Masuk...';
+
+    Swal.fire({
+        title: 'Memproses login...',
+        text: 'Mohon tunggu sebentar',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+});
+</script>
 @endsection

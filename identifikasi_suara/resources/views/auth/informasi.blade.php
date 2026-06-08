@@ -57,7 +57,7 @@
             </div>
 
             <!-- Action Buttons -->
-            <button type="submit" class="btn btn-primary w-100 mb-2">Simpan</button>
+            <button type="submit" class="btn btn-primary w-100 mb-2" id="btnSimpan">Simpan</button>
             <a href="/login" class="btn btn-outline-primary w-100">Login sebagai Admin</a>
         </form>
     </div>
@@ -137,6 +137,23 @@
 document.getElementById('userForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    const btnSimpan = document.getElementById('btnSimpan');
+    const originalText = btnSimpan.innerHTML;
+
+    // Set button loading state
+    btnSimpan.disabled = true;
+    btnSimpan.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Menyimpan...';
+
+    // Show SweetAlert loading state immediately
+    Swal.fire({
+        title: 'Menyimpan data...',
+        text: 'Mohon tunggu sebentar',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
     const data = {
         nama: document.getElementById('nama').value,
         email: document.getElementById('email').value,
@@ -156,19 +173,12 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
     .then(res => res.json())
     .then(response => {
         if (response.status === 'success') {
-            Swal.fire({
-                title: 'Selamat Datang!',
-                text: 'Halo, ' + data.nama + '! Data Anda berhasil disimpan.',
-                icon: 'success',
-                confirmButtonText: 'Lanjut',
-                confirmButtonColor: '#0c56d0',
-                allowOutsideClick: false
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = response.redirect;
-                }
-            });
+            // Redirect immediately while loading popup remains visible
+            window.location.href = response.redirect;
         } else {
+            // Restore button
+            btnSimpan.disabled = false;
+            btnSimpan.innerHTML = originalText;
             Swal.fire({
                 title: 'Gagal!',
                 text: 'Terjadi kesalahan, coba lagi.',
@@ -179,6 +189,9 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
     })
     .catch(err => {
         console.error(err);
+        // Restore button
+        btnSimpan.disabled = false;
+        btnSimpan.innerHTML = originalText;
         Swal.fire({
             title: 'Error!',
             text: 'Terjadi kesalahan sistem.',

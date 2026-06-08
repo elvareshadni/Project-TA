@@ -89,6 +89,12 @@
                     Jarak mulut &plusmn; 10 cm dari mikrofon <br>
                     <span style="display: inline-block; margin-top: 5px; font-weight: bold;">Durasi minimal perekaman {{ $minSeconds }} detik</span>
                 </div>
+
+                <!-- Privacy Badge -->
+                <div style="margin-top: 15px; font-size: 12px; color: #475569; display: flex; align-items: center; gap: 6px; font-weight: 500; background: #f1f5f9; padding: 6px 12px; border-radius: 20px;">
+                    <i class="fa-solid fa-shield-halved" style="color: #10b981;"></i>
+                    <span>Suara tidak disimpan, privasi anda aman</span>
+                </div>
             </div>
 
         </div>
@@ -359,6 +365,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Mengeluarkan sesi...',
+                        text: 'Mohon tunggu sebentar',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
                     document.getElementById('logoutForm').submit();
                 }
             });
