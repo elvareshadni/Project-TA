@@ -44,7 +44,6 @@
                     <tr>
                         <th rowspan="2" style="width: 3%;">No</th>
                         <th rowspan="2">Nama</th>
-                        <th rowspan="2">No. HP</th>
                         <th rowspan="2">JK</th>
                         <th rowspan="2">Usia</th>
                         <th rowspan="2">Durasi</th>
@@ -72,7 +71,6 @@
                         <tr>
                             <td class="text-center">{{ $rekapData->firstItem() + $loop->index }}</td>
                             <td>{{ $data->nama ?? '-' }}</td>
-                            <td>{{ $data->no_hp ?? '-' }}</td>
                             <td class="text-center">{{ $data->gender ?? '-' }}</td>
                             <td class="text-center">{{ $data->usia ? $data->usia : '-' }}</td>
                             <td class="text-center">{{ $data->durasi ?? '-' }}</td>
@@ -107,7 +105,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="13" class="text-center text-muted">
+                            <td colspan="12" class="text-center text-muted">
                                 Belum ada data identifikasi.
                             </td>
                         </tr>

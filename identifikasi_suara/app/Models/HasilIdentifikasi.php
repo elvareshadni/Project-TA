@@ -12,7 +12,6 @@ class HasilIdentifikasi extends Model
     protected $fillable = [
         'nama',
         'email',
-        'no_hp',
         'gender',
         'usia',
         'sumber',

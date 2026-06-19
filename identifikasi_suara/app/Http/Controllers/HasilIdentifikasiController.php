@@ -21,7 +21,6 @@ class HasilIdentifikasiController extends Controller
 
             'nama'   => 'nullable|string',
             'email'  => 'nullable|email',
-            'no_hp'  => 'nullable|string',
             'gender' => 'nullable|string',
             'usia'   => 'nullable',
         ]);
@@ -29,7 +28,6 @@ class HasilIdentifikasiController extends Controller
         HasilIdentifikasi::create([
             'nama'   => $data['nama']   ?? null,
             'email'  => $data['email']  ?? null,
-            'no_hp'  => $data['no_hp']  ?? null,
             'gender' => $data['gender'] ?? null,
             'usia'   => $data['usia']   ?? null,
 
@@ -74,7 +72,6 @@ class HasilIdentifikasiController extends Controller
 
             'nama'   => 'nullable|string',
             'email'  => 'nullable|email',
-            'no_hp'  => 'nullable|string',
             'gender' => 'nullable|string',
             'usia'   => 'nullable',
         ]);

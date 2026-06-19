@@ -62,7 +62,7 @@ class RekapDataController extends Controller
 
             // Header CSV
             fputcsv($file, [
-                'Nama', 'No. HP', 'Gender', 'Usia', 'Durasi',
+                'Nama', 'Gender', 'Usia', 'Durasi',
                 'Happy', 'Sad', 'Angry', 'Surprised', 'Neutral',
                 'Waktu'
             ]);
@@ -72,7 +72,6 @@ class RekapDataController extends Controller
 
                 fputcsv($file, [
                     $row->nama ?? '-',
-                    $row->no_hp ?? '-',
                     $row->gender ?? '-',
                     $row->usia ?? '-',
                     $row->durasi ?? '-',

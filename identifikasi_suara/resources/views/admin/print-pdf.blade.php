@@ -75,7 +75,7 @@
     <div class="container">
         <div class="header">
             <h1>SUARA KU</h1>
-            <p>Laporan Hasil Identifikasi Emosi</p>
+            <p>Laporan Hasil Identifikasi Emosi & Suku</p>
         </div>
 
         <div class="content">
@@ -88,10 +88,6 @@
             <tr>
                 <th>Email</th>
                 <td>{{ $data->email }}</td>
-            </tr>
-            <tr>
-                <th>No. HP</th>
-                <td>{{ $data->no_hp ?? '-' }}</td>
             </tr>
             <tr>
                 <th>Jenis Kelamin</th>
@@ -115,7 +111,10 @@
                 $domEmotionPercent = number_format($data->distribution_by_emotion[$data->hasil]['percent'], 2);
             }
             
-
+            $domSukuPercent = 0;
+            if (isset($data->distribution_by_suku[$data->dominant_suku]['percent'])) {
+                $domSukuPercent = number_format($data->distribution_by_suku[$data->dominant_suku]['percent'], 2);
+            }
         @endphp
 
         <div class="summary-box">
@@ -123,7 +122,10 @@
             <h2>{{ $data->hasil }} <span style="font-size: 18px; color: #64748b;">({{ $domEmotionPercent }}%)</span></h2>
         </div>
 
-
+        <div class="summary-box">
+            <p>Suku Dominan</p>
+            <h2>{{ $data->dominant_suku }} <span style="font-size: 18px; color: #64748b;">({{ $domSukuPercent }}%)</span></h2>
+        </div>
 
         @if($data->akurasi)
         <div class="summary-box">
@@ -132,25 +134,47 @@
         </div>
         @endif
 
-        <div class="result-title" style="margin-top: 30px;">Detail Persentase Emosi</div>
+        <div class="result-title" style="margin-top: 30px;">Detail Persentase Emosi & Suku</div>
         <table class="detail-table" style="margin-bottom: 10px; width: 100%; border-collapse: collapse;">
             <thead>
                 <tr>
-                    <th style="background-color: #f8f9fa; padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Kelas Emosi</th>
-                    <th style="background-color: #f8f9fa; padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Persentase</th>
+                    <th style="width: 50%; border-right: 1px solid #ddd; background-color: #f8f9fa; padding: 10px; text-align: left;">Kelas Emosi</th>
+                    <th style="width: 50%; background-color: #f8f9fa; padding: 10px; text-align: left;">Kelas Suku</th>
                 </tr>
             </thead>
             <tbody>
-                @if(is_array($data->distribution_by_emotion))
-                    @foreach($data->distribution_by_emotion as $emotion => $val)
-                    <tr>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: left;">{{ $emotion }}</td>
-                        <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right; font-weight: 600;">{{ isset($val['percent']) ? number_format($val['percent'], 2) : 0 }}%</td>
-                    </tr>
-                    @endforeach
-                @else
-                    <tr><td colspan="2" style="padding: 10px; text-align: center; border-bottom: 1px solid #ddd;">Tidak ada data</td></tr>
-                @endif
+                <tr>
+                    <td style="vertical-align: top; padding: 0; border-right: 1px solid #ddd;">
+                        <div class="mobile-title">Kelas Emosi</div>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            @if(is_array($data->distribution_by_emotion))
+                                @foreach($data->distribution_by_emotion as $emotion => $val)
+                                <tr>
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $emotion }}</td>
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right; font-weight: 600;">{{ isset($val['percent']) ? number_format($val['percent'], 2) : 0 }}%</td>
+                                </tr>
+                                @endforeach
+                            @else
+                                <tr><td style="padding: 10px; text-align: center;">Tidak ada data</td></tr>
+                            @endif
+                        </table>
+                    </td>
+                    <td style="vertical-align: top; padding: 0;">
+                        <div class="mobile-title">Kelas Suku</div>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            @if(is_array($data->distribution_by_suku))
+                                @foreach($data->distribution_by_suku as $suku => $val)
+                                <tr>
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd;">{{ $suku }}</td>
+                                    <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right; font-weight: 600;">{{ isset($val['percent']) ? number_format($val['percent'], 2) : 0 }}%</td>
+                                </tr>
+                                @endforeach
+                            @else
+                                <tr><td style="padding: 10px; text-align: center;">Tidak ada data</td></tr>
+                            @endif
+                        </table>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

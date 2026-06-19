@@ -257,7 +257,6 @@
     
     <input type="hidden" name="nama" value="{{ session('username') }}">
     <input type="hidden" name="email" value="{{ session('email') }}">
-    <input type="hidden" name="no_hp" value="{{ session('no_hp') }}">
     <input type="hidden" name="gender" value="{{ session('gender') }}">
     <input type="hidden" name="usia" value="{{ session('usia') }}">
 </form>
@@ -401,25 +400,6 @@ async function toggleRecording(forceStop = false) {
     const timerDisplay = document.getElementById('recordTimer');
 
     if (!isRecording) {
-        // Reset/refresh UI dari hasil perekaman sebelumnya
-        currentResult = null;
-        recordedWavBlob = null;
-        if (wsRecord) wsRecord.stop();
-
-        document.getElementById('resultDetailsWrapper').style.display = 'none';
-        const resDetailsCard = document.getElementById('resultDetailsCard');
-        if (resDetailsCard) resDetailsCard.style.display = 'none';
-        document.getElementById('instructionsCard').style.display = 'flex';
-        document.getElementById('domEmotionEmpty').style.display = 'block';
-        document.getElementById('domEmotionResult').style.display = 'none';
-        
-        const recordPlayer = document.getElementById('recordPlayerSection');
-        if (recordPlayer) recordPlayer.style.display = 'none';
-
-        document.getElementById('saveLoading').style.display = 'none';
-        document.getElementById('saveSuccess').style.display = 'none';
-        document.getElementById('saveError').style.display = 'none';
-
         try {
             mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
@@ -617,7 +597,6 @@ async function simpanKeLaravel(source, result, fileName = null, durationStr = nu
                 distribution_by_emotion: result.distribution_by_emotion || null,
                 distribution_by_suku: result.distribution_by_suku || null,
                 nama: "{{ session('username') }}", email: "{{ session('email') }}",
-                no_hp: "{{ session('no_hp') }}",
                 gender: "{{ session('gender') }}", usia: "{{ session('usia') }}"
             }),
         });
