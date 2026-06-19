@@ -62,18 +62,17 @@ class RekapDataController extends Controller
 
             // Header CSV
             fputcsv($file, [
-                'Nama', 'Gender', 'Usia', 'Durasi',
+                'Nama', 'No. HP', 'Gender', 'Usia', 'Durasi',
                 'Happy', 'Sad', 'Angry', 'Surprised', 'Neutral',
-                'Jawa', 'Sunda', 'Batak', 'Minang', 'Betawi',
                 'Waktu'
             ]);
 
             foreach ($data as $row) {
                 $em = $row->distribution_by_emotion ?? [];
-                $sk = $row->distribution_by_suku ?? [];
 
                 fputcsv($file, [
                     $row->nama ?? '-',
+                    $row->no_hp ?? '-',
                     $row->gender ?? '-',
                     $row->usia ?? '-',
                     $row->durasi ?? '-',
@@ -82,11 +81,6 @@ class RekapDataController extends Controller
                     $em['Angry']['percent'] ?? 0,
                     $em['Surprised']['percent'] ?? 0,
                     $em['Neutral']['percent'] ?? 0,
-                    $sk['Jawa']['percent'] ?? 0,
-                    $sk['Sunda']['percent'] ?? 0,
-                    $sk['Batak']['percent'] ?? 0,
-                    $sk['Minang']['percent'] ?? 0,
-                    $sk['Betawi']['percent'] ?? 0,
                     optional($row->created_at)->format('Y-m-d H:i:s'),
                 ]);
             }

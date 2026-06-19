@@ -1369,11 +1369,11 @@ header nav {
     --card-shadow: 0 4px 20px -2px rgba(12, 86, 208, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
     
     /* Emotion colors */
-    --color-happy: #eab308; /* Bahagia: Kuning */
-    --color-sad: #3b82f6; /* Sedih: Biru */
-    --color-angry: #ef4444; /* Marah: Merah */
-    --color-surprised: #a855f7; /* Terkejut: Ungu */
-    --color-neutral: #64748b; /* Netral: Abu-abu */
+    --color-happy: #ef4444; /* Bahagia: Merah */
+    --color-sad: #ea580c; /* Sedih: Orange */
+    --color-angry: #0c56d0; /* Marah: Biru */
+    --color-surprised: #64748b; /* Terkejut: Abu-abu */
+    --color-neutral: #7c3aed; /* Netral: Ungu */
     
     /* Suku colors */
     --color-jawa: #15803d; /* Jawa: Hijau tua */
@@ -1673,9 +1673,10 @@ header nav .username {
 /* Details card grid */
 .details-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    max-width: 650px;
+    margin: 0 auto 24px auto;
     gap: 24px;
-    margin-bottom: 24px;
 }
 
 .details-card {
@@ -1997,7 +1998,7 @@ header nav .username {
     }
     
     .details-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 12px;
     }
     
@@ -2045,5 +2046,11 @@ header nav .username {
         text-align: center;
         justify-content: center;
         width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .summaries-section {
+        flex-direction: column !important;
     }
 }

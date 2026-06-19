@@ -85,9 +85,9 @@
                 <div class="timer-text" id="recordTimer" style="display: none;">00:00 / 05:00</div>
                 
                 <!-- Help/Warning Text -->
-                <div class="mic-help-text" id="newMicHelpText">
+                <div class="mic-help-text" id="newMicHelpText" style="color: var(--text-muted);">
                     Jarak mulut &plusmn; 10 cm dari mikrofon <br>
-                    <span style="display: inline-block; margin-top: 5px; font-weight: bold;">Durasi minimal perekaman {{ $minSeconds }} detik</span>
+                    <span style="display: inline-block; margin-top: 5px; font-weight: bold; color: var(--primary-color); font-size: 14px;">Durasi minimal perekaman {{ $minSeconds }} detik</span>
                 </div>
 
                 <!-- Privacy Badge -->
@@ -120,21 +120,67 @@
                 </div>
             </div>
 
-            <!-- Box 2: Suku Terdeteksi -->
-            <div class="summary-card">
+            <!-- Box 2: Detail Emosi (hidden by default) -->
+            <div class="details-card" id="resultDetailsCard" style="display: none;">
                 <div class="summary-card-header">
-                    <i class="fa-regular fa-user" style="font-size: 14px;"></i>
-                    <span>Suku Terdeteksi</span>
+                    <i class="fa-regular fa-face-smile" style="font-size: 14px;"></i>
+                    <span>DETAIL EMOSI</span>
                 </div>
-                <div class="summary-card-body" id="domSukuBody">
-                    <div class="summary-empty-state" id="domSukuEmpty">Belum ada hasil</div>
-                    <!-- Dynamic result template -->
-                    <div id="domSukuResult" style="display: none; align-items: center; gap: 16px;">
-                        <img src="./img/jawa.png" class="summary-avatar" id="res_sukuEmojiIcon" alt="avatar">
-                        <div class="summary-details">
-                            <div class="summary-name" id="res_sukuDominant">-</div>
-                            <div class="summary-score" style="color: var(--primary-color); font-weight:600; font-size:13px;">Skor suku dominan: <span id="res_sukuDominantPercent">-</span></div>
+                <div class="detail-bars-container">
+                    <!-- Bahagia -->
+                    <div class="progress-row">
+                        <div class="progress-label">Bahagia</div>
+                        <div class="progress-track-wrapper">
+                            <div class="progress-dot happy-dot"></div>
+                            <div class="progress-track-bg">
+                                <div class="progress-track-fill happy-fill" id="res_happyBar" style="width: 0%;"></div>
+                            </div>
                         </div>
+                        <div class="progress-value" id="res_happyVal">0%</div>
+                    </div>
+                    <!-- Sedih -->
+                    <div class="progress-row">
+                        <div class="progress-label">Sedih</div>
+                        <div class="progress-track-wrapper">
+                            <div class="progress-dot sad-dot"></div>
+                            <div class="progress-track-bg">
+                                <div class="progress-track-fill sad-fill" id="res_sadBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-value" id="res_sadVal">0%</div>
+                    </div>
+                    <!-- Marah -->
+                    <div class="progress-row">
+                        <div class="progress-label">Marah</div>
+                        <div class="progress-track-wrapper">
+                            <div class="progress-dot angry-dot"></div>
+                            <div class="progress-track-bg">
+                                <div class="progress-track-fill angry-fill" id="res_angryBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-value" id="res_angryVal">0%</div>
+                    </div>
+                    <!-- Terkejut -->
+                    <div class="progress-row">
+                        <div class="progress-label">Terkejut</div>
+                        <div class="progress-track-wrapper">
+                            <div class="progress-dot surprised-dot"></div>
+                            <div class="progress-track-bg">
+                                <div class="progress-track-fill surprised-fill" id="res_surprisedBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-value" id="res_surprisedVal">0%</div>
+                    </div>
+                    <!-- Netral -->
+                    <div class="progress-row">
+                        <div class="progress-label">Netral</div>
+                        <div class="progress-track-wrapper">
+                            <div class="progress-dot neutral-dot"></div>
+                            <div class="progress-track-bg">
+                                <div class="progress-track-fill neutral-fill" id="res_neutralBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="progress-value" id="res_neutralVal">0%</div>
                     </div>
                 </div>
             </div>
@@ -170,79 +216,6 @@
 
     {{-- 3. RESULT DETAIL CHARTS (Hidden by default) --}}
     <div id="resultDetailsWrapper" style="display: none; width: 100%;">
-        <div class="details-grid">
-            <!-- Card Detail Emosi -->
-            <div class="details-card">
-                <div class="details-card-title">
-                    <i class="fa-regular fa-face-smile" style="font-size: 16px; color: var(--primary-color);"></i>
-                    <span>DETAIL EMOSI</span>
-                </div>
-                <div class="detail-bars-container">
-                    <!-- Bahagia -->
-                    <div class="progress-row">
-                        <div class="progress-label">Bahagia</div>
-                        <div class="progress-track-wrapper">
-                            <div class="progress-track-bg">
-                                <div class="progress-track-fill happy-fill" id="res_happyBar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-value" id="res_happyVal">0%</div>
-                    </div>
-                    <!-- Sedih -->
-                    <div class="progress-row">
-                        <div class="progress-label">Sedih</div>
-                        <div class="progress-track-wrapper">
-                            <div class="progress-track-bg">
-                                <div class="progress-track-fill sad-fill" id="res_sadBar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-value" id="res_sadVal">0%</div>
-                    </div>
-                    <!-- Marah -->
-                    <div class="progress-row">
-                        <div class="progress-label">Marah</div>
-                        <div class="progress-track-wrapper">
-                            <div class="progress-track-bg">
-                                <div class="progress-track-fill angry-fill" id="res_angryBar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-value" id="res_angryVal">0%</div>
-                    </div>
-                    <!-- Terkejut -->
-                    <div class="progress-row">
-                        <div class="progress-label">Terkejut</div>
-                        <div class="progress-track-wrapper">
-                            <div class="progress-track-bg">
-                                <div class="progress-track-fill surprised-fill" id="res_surprisedBar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-value" id="res_surprisedVal">0%</div>
-                    </div>
-                    <!-- Netral -->
-                    <div class="progress-row">
-                        <div class="progress-label">Netral</div>
-                        <div class="progress-track-wrapper">
-                            <div class="progress-track-bg">
-                                <div class="progress-track-fill neutral-fill" id="res_neutralBar" style="width: 0%;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-value" id="res_neutralVal">0%</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card Detail Suku -->
-            <div class="details-card">
-                <div class="details-card-title">
-                    <i class="fa-regular fa-user" style="font-size: 16px; color: var(--primary-color);"></i>
-                    <span>DETAIL SUKU</span>
-                </div>
-                <div class="detail-bars-container" id="res_sukuBars">
-                    <!-- Dynamic rendering in JS -->
-                </div>
-            </div>
-        </div>
-
         {{-- FOOTER STATUS BANNER & ACTION --}}
         <div class="footer-row">
             <div>
@@ -252,7 +225,7 @@
             </div>
             
             <div class="status-banner" id="saveSuccess" style="display: none;">
-                <i class="fa-solid fa-envelope-circle-check"></i>
+                <i class="fa-solid fa-envelope"></i>
                 <span>Hasil analisis berhasil disimpan &amp; dikirim ke email: <strong>{{ session('email') }}</strong></span>
             </div>
             
@@ -284,6 +257,7 @@
     
     <input type="hidden" name="nama" value="{{ session('username') }}">
     <input type="hidden" name="email" value="{{ session('email') }}">
+    <input type="hidden" name="no_hp" value="{{ session('no_hp') }}">
     <input type="hidden" name="gender" value="{{ session('gender') }}">
     <input type="hidden" name="usia" value="{{ session('usia') }}">
 </form>
@@ -427,6 +401,25 @@ async function toggleRecording(forceStop = false) {
     const timerDisplay = document.getElementById('recordTimer');
 
     if (!isRecording) {
+        // Reset/refresh UI dari hasil perekaman sebelumnya
+        currentResult = null;
+        recordedWavBlob = null;
+        if (wsRecord) wsRecord.stop();
+
+        document.getElementById('resultDetailsWrapper').style.display = 'none';
+        const resDetailsCard = document.getElementById('resultDetailsCard');
+        if (resDetailsCard) resDetailsCard.style.display = 'none';
+        document.getElementById('instructionsCard').style.display = 'flex';
+        document.getElementById('domEmotionEmpty').style.display = 'block';
+        document.getElementById('domEmotionResult').style.display = 'none';
+        
+        const recordPlayer = document.getElementById('recordPlayerSection');
+        if (recordPlayer) recordPlayer.style.display = 'none';
+
+        document.getElementById('saveLoading').style.display = 'none';
+        document.getElementById('saveSuccess').style.display = 'none';
+        document.getElementById('saveError').style.display = 'none';
+
         try {
             mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             
@@ -509,12 +502,12 @@ function showLoadingPage() {
 
     document.getElementById('instructionsCard').style.display = 'none';
     document.getElementById('resultDetailsWrapper').style.display = 'none';
+    const resDetailsCard = document.getElementById('resultDetailsCard');
+    if (resDetailsCard) resDetailsCard.style.display = 'none';
     document.getElementById('unifiedProcessingLoader').style.display = 'flex';
     
     document.getElementById('domEmotionEmpty').style.display = 'block';
     document.getElementById('domEmotionResult').style.display = 'none';
-    document.getElementById('domSukuEmpty').style.display = 'block';
-    document.getElementById('domSukuResult').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -533,6 +526,8 @@ function showResultPage(result, source = 'record') {
     document.getElementById('unifiedProcessingLoader').style.display = 'none';
     document.getElementById('instructionsCard').style.display = 'none';
     document.getElementById('resultDetailsWrapper').style.display = 'block';
+    const resDetailsCard = document.getElementById('resultDetailsCard');
+    if (resDetailsCard) resDetailsCard.style.display = 'block';
     
     document.getElementById('saveLoading').style.display = 'none';
     document.getElementById('saveSuccess').style.display = 'none';
@@ -540,8 +535,6 @@ function showResultPage(result, source = 'record') {
 
     document.getElementById('domEmotionEmpty').style.display = 'none';
     document.getElementById('domEmotionResult').style.display = 'flex';
-    document.getElementById('domSukuEmpty').style.display = 'none';
-    document.getElementById('domSukuResult').style.display = 'flex';
 
     fillResult('res_', result);
     window.scrollTo({ top: 150, behavior: 'smooth' });
@@ -558,12 +551,12 @@ function resetToInput() {
 
     document.getElementById('unifiedProcessingLoader').style.display = 'none';
     document.getElementById('resultDetailsWrapper').style.display = 'none';
+    const resDetailsCard = document.getElementById('resultDetailsCard');
+    if (resDetailsCard) resDetailsCard.style.display = 'none';
     document.getElementById('instructionsCard').style.display = 'flex';
     
     document.getElementById('domEmotionEmpty').style.display = 'block';
     document.getElementById('domEmotionResult').style.display = 'none';
-    document.getElementById('domSukuEmpty').style.display = 'block';
-    document.getElementById('domSukuResult').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -624,6 +617,7 @@ async function simpanKeLaravel(source, result, fileName = null, durationStr = nu
                 distribution_by_emotion: result.distribution_by_emotion || null,
                 distribution_by_suku: result.distribution_by_suku || null,
                 nama: "{{ session('username') }}", email: "{{ session('email') }}",
+                no_hp: "{{ session('no_hp') }}",
                 gender: "{{ session('gender') }}", usia: "{{ session('usia') }}"
             }),
         });
@@ -676,21 +670,7 @@ function fillResult(prefix, result) {
   document.getElementById(prefix + 'emojiIcon').src = {"Happy": "./img/happy.png", "Sad": "./img/sad.png", "Angry": "./img/angry.png", "Surprised": "./img/surprised.png", "Neutral": "./img/neutral.png"}[dominantEmotion];
   document.getElementById(prefix + 'mainEmotion').innerText = {"Happy": "Bahagia", "Sad": "Sedih", "Angry": "Marah", "Surprised": "Terkejut", "Neutral": "Netral"}[dominantEmotion] || dominantEmotion;
   document.getElementById(prefix + 'mainPercent').innerText = maxEmotionVal.toFixed(1) + '%';
-  let dominantSuku = "-", maxSukuVal = 0;
-  const barChart = document.getElementById(prefix + 'sukuBars');
-  if(barChart) {
-      barChart.innerHTML = '';
-      Object.keys(sukuDist).forEach(suku => {
-        const val = parseFloat(sukuDist[suku]?.percent ?? 0);
-        if (val > maxSukuVal) { maxSukuVal = val; dominantSuku = suku; }
-        const row = document.createElement('div'); row.className = 'progress-row';
-        row.innerHTML = `<div class="progress-label">${suku}</div><div class="progress-track-wrapper"><div class="progress-track-bg"><div class="progress-track-fill ${suku.toLowerCase()}-fill" style="width: ${val.toFixed(1)}%;"></div></div></div><div class="progress-value">${val.toFixed(1)}%</div>`;
-        barChart.appendChild(row);
-      });
-  }
-  document.getElementById(prefix + 'sukuEmojiIcon').src = {"Batak": "./img/batak.png", "Jawa": "./img/jawa.png", "Sunda": "./img/sunda.png", "Betawi": "./img/betawi.png", "Minang": "./img/minang.png"}[dominantSuku] || "./img/neutral.png";
-  document.getElementById(prefix + 'sukuDominant').innerText = dominantSuku;
-  document.getElementById(prefix + 'sukuDominantPercent').innerText = maxSukuVal.toFixed(1) + '%';
+
 }
 
 function previewResult() {

@@ -44,19 +44,7 @@
             <h3>Ringkasan Dominan</h3>
             <p><strong>Emosi Dominan:</strong> {{ $data['hasil'] }}</p>
             
-            @php
-                $domSuku = '-';
-                $maxSuku = 0;
-                if(isset($data['distribution_by_suku'])) {
-                    foreach($data['distribution_by_suku'] as $suku => $val) {
-                        if($val['percent'] > $maxSuku) {
-                            $maxSuku = $val['percent'];
-                            $domSuku = $suku;
-                        }
-                    }
-                }
-            @endphp
-            <p><strong>Suku Dominan:</strong> {{ $domSuku }}</p>
+
         </div>
 
         <div class="result-box">
@@ -81,27 +69,7 @@
             </table>
         </div>
 
-        <div class="result-box">
-            <h3>Detail Suku</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Suku</th>
-                        <th>Persentase</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(isset($data['distribution_by_suku']))
-                        @foreach($data['distribution_by_suku'] as $suku => $val)
-                            <tr>
-                                <td>{{ $suku }}</td>
-                                <td>{{ number_format($val['percent'], 2) }}%</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
-        </div>
+
 
         <p>Terima kasih,</p>
         <p>Tim SUARAKU</p>

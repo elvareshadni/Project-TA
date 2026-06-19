@@ -44,12 +44,12 @@
                     <tr>
                         <th rowspan="2" style="width: 3%;">No</th>
                         <th rowspan="2">Nama</th>
+                        <th rowspan="2">No. HP</th>
                         <th rowspan="2">JK</th>
                         <th rowspan="2">Usia</th>
                         <th rowspan="2">Durasi</th>
                         
                         <th colspan="5">Emosi (%)</th>
-                        <th colspan="5">Suku (%)</th>
                         
                         <th rowspan="2">Waktu</th>
                         <th rowspan="2" style="width: 10%;">Action</th>
@@ -61,13 +61,6 @@
                         <th>Angry</th>
                         <th>Surprised</th>
                         <th>Neutral</th>
-                        
-                        <!-- Suku Headers -->
-                        <th>Jawa</th>
-                        <th>Sunda</th>
-                        <th>Batak</th>
-                        <th>Minang</th>
-                        <th>Betawi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,6 +72,7 @@
                         <tr>
                             <td class="text-center">{{ $rekapData->firstItem() + $loop->index }}</td>
                             <td>{{ $data->nama ?? '-' }}</td>
+                            <td>{{ $data->no_hp ?? '-' }}</td>
                             <td class="text-center">{{ $data->gender ?? '-' }}</td>
                             <td class="text-center">{{ $data->usia ? $data->usia : '-' }}</td>
                             <td class="text-center">{{ $data->durasi ?? '-' }}</td>
@@ -89,13 +83,6 @@
                             <td class="text-center">{{ number_format($em['Angry']['percent'] ?? 0, 1) }}%</td>
                             <td class="text-center">{{ number_format($em['Surprised']['percent'] ?? 0, 1) }}%</td>
                             <td class="text-center">{{ number_format($em['Neutral']['percent'] ?? 0, 1) }}%</td>
-
-                            <!-- Suku Values -->
-                            <td class="text-center">{{ number_format($sk['Jawa']['percent'] ?? 0, 1) }}%</td>
-                            <td class="text-center">{{ number_format($sk['Sunda']['percent'] ?? 0, 1) }}%</td>
-                            <td class="text-center">{{ number_format($sk['Batak']['percent'] ?? 0, 1) }}%</td>
-                            <td class="text-center">{{ number_format($sk['Minang']['percent'] ?? 0, 1) }}%</td>
-                            <td class="text-center">{{ number_format($sk['Betawi']['percent'] ?? 0, 1) }}%</td>
                             
                             <!-- Date -->
                             <td class="text-center" style="font-size:0.8rem;">
@@ -120,7 +107,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="17" class="text-center text-muted">
+                            <td colspan="13" class="text-center text-muted">
                                 Belum ada data identifikasi.
                             </td>
                         </tr>

@@ -101,15 +101,6 @@
                         <p class="mb-0 text-white-50" style="font-size: 11.5px;">Analisis emosi dari suaramu</p>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center justify-content-center rounded-circle text-white" style="width: 38px; height: 38px; background-color: rgba(255, 255, 255, 0.12); flex-shrink: 0;">
-                        <i class="fa-solid fa-user-tag fs-5"></i>
-                    </div>
-                    <div>
-                        <h6 class="mb-0 text-white fw-bold" style="font-size: 13.5px;">Identifikasi Suku</h6>
-                        <p class="mb-0 text-white-50" style="font-size: 11.5px;">Kenali asal suku dari dialek suaramu</p>
-                    </div>
-                </div>
             </div>
 
             <!-- Visual equalizer animation -->
